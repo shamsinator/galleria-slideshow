@@ -23,6 +23,7 @@ const MasonryGrid: React.FC<MasonryGridProps> = ({ paintings }) => {
         <div key={id} className="masonry-item">
           {/* Each masonry item contains an ImageCard component */}
           <ArtworkCard
+            id={id}
             name={name}
             artist={artist.name}
             path={images.thumbnail}

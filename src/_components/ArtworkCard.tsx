@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ArtworkCard({
+  id,
   name,
   artist,
   path,
 }: {
+  id: string;
   name: string;
   artist: string;
   path: string;
@@ -17,7 +19,7 @@ export default function ArtworkCard({
         role="button"
         aria-label={name}
         tabIndex={0}
-        href={encodeURI(`/piece/${name}`)}
+        href={encodeURI(`/gallery/${id}`)}
       >
         <Image
           className="w-full h-auto object-contain"
