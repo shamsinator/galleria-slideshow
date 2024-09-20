@@ -12,7 +12,7 @@ export const Header = () => {
         href="/"
         aria-label="home"
       >
-        <Image src={Logo} alt="Logo" width={113} height={32} priority />
+        <Image src={Logo} alt="Logo" width={170} height={48} priority />
       </Link>
       <StartSlideshowButton />
     </div>
