@@ -1,6 +1,12 @@
 import { notFound } from "next/navigation";
 import { paintings } from "../../data";
 
+import {
+  LayoutContainer,
+  MainContentContainer,
+} from "@/_components/LayoutContainer";
+import MainHeader from "@/_components/MainHeader";
+
 // Utility function to slugify the artwork name (same as in the overview)
 function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-");
@@ -19,11 +25,14 @@ export default function ArtworkDetail({
   }
 
   return (
-    <div>
-      <h1>{artwork.name}</h1>
-      <p>{artwork.artist.name}</p>
-      <p>{artwork.year}</p>
-      <p>{artwork.description}</p>
-    </div>
+    <LayoutContainer>
+      <MainHeader />
+      <MainContentContainer>
+        <h1>{artwork.name}</h1>
+        <p>{artwork.artist.name}</p>
+        <p>{artwork.year}</p>
+        <p>{artwork.description}</p>
+      </MainContentContainer>
+    </LayoutContainer>
   );
 }
