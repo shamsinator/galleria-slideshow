@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { paintings } from "../../data";
+import ResponsiveImage from "@/_components/ResponsiveImage";
 
 import {
   LayoutContainer,
@@ -25,7 +26,7 @@ export default function ArtworkDetail({
 
   // TODO: handle 404 with custom 404 page
   if (!artwork) {
-    notFound(); // Built-in 404 handling if no artwork is found
+    notFound();
   }
 
   return (
@@ -34,14 +35,7 @@ export default function ArtworkDetail({
       <MainContentContainer>
         <div className="grid grid-cols-1 lg:grid-cols-2 md:flex md:flex-col lg:grid md:justify-center md:items-center gap-20 mb-32 max-w-[1280px]">
           <div className="h-full relative md:w-full">
-            {/* TODO: use small images for small screens */}
-            <Image
-              src={artwork?.images?.hero?.large}
-              alt={artwork?.name}
-              width={400}
-              height={400}
-              className="2xl:w-[500px]"
-            />
+            <ResponsiveImage artwork={artwork} />
             {/* TODO: implement lightbox feature */}
             <div className=" absolute w-56 h-32 lg:w-72 lg:h-56 lg:flex flex-col items-start justify-center bg-white -bottom-10 -left-1 p-4 md:bottom-auto md:left-auto md:w-72 md:h-48 md:p-8 md:right-[100px] md:-top-2 lg:-top-3 lg:-right-16 2xl:-top-2 2xl:-right-12 lg:p-10 2xl:pl-8 2xl:py-4 2xl:w-96 2xl:h-60">
               <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl text-pretty">
