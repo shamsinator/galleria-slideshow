@@ -15,14 +15,40 @@ function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-");
 }
 
+// Helper function to find the artwork by slug
+function findArtworkBySlug(slug: string) {
+  return paintings.find((item) => slugify(item.id) === slug);
+}
+
+// NOTE: generateMetadata function is automatically invoked by Nextjs, when a page is requested.
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const artwork = findArtworkBySlug(params.slug);
+
+  if (!artwork) {
+    return {
+      title: "Artwork Not Found",
+      description: "The artwork you are looking for does not exist.",
+    };
+  }
+
+  return {
+    title: artwork.name,
+    description:
+      artwork.description.slice(0, artwork.description.indexOf(".") + 1) ||
+      "No description available.",
+  };
+}
+
 export default function ArtworkDetail({
   params,
 }: {
   params: { slug: string };
 }) {
-  // TODO: use destructuring syntax to extract the slug from the params
-  // Find the artwork with the matching slug
-  const artwork = paintings.find((item) => slugify(item.id) === params.slug);
+  const artwork = findArtworkBySlug(params.slug);
 
   // TODO: handle 404 with custom 404 page
   if (!artwork) {
