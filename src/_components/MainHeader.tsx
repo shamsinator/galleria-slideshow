@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/assets/images/logo.svg";
-import StartSlideshowButton from "./StartSlideshowButton";
+import SlideshowButton from "@/app/SlideshowButton";
 
 interface HeaderProps {
   showSlideshowButton?: boolean;
@@ -21,7 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <Image src={Logo} alt="Logo" width={170} height={48} priority />
         </Link>
-        {showSlideshowButton && <StartSlideshowButton />}
+        {showSlideshowButton && <SlideshowButton />}
       </div>
     </header>
   );
