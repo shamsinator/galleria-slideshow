@@ -9,7 +9,7 @@ import {
   LayoutContainer,
   MainContentContainer,
 } from "@/_components/LayoutContainer";
-import MainHeader from "@/_components/MainHeader";
+import MainHeader from "@/_components/Header/MainHeader";
 
 // Utility function to slugify the artwork name (same as in the overview)
 function slugify(name: string) {

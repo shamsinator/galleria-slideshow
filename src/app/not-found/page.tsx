@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import MainHeader from "@/_components/MainHeader";
-import Divider from "@/_components/Divider";
+import MainHeader from "@/_components/Header/MainHeader";
+import Divider from "@/_components/Header/Divider";
 
 export default function NotFoundPage() {
   return (

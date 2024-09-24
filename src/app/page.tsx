@@ -1,4 +1,4 @@
-import MainHeader from "@/_components/MainHeader";
+import MainHeader from "@/_components/Header/MainHeader";
 import { paintings } from "./data";
 import ArtworkGallery from "@/_components/ArtworkGallery";
 import {

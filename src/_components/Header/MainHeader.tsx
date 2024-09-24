@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "../../public/assets/images/logo.svg";
-import SlideshowButton from "@/app/SlideshowButton";
+import SlideshowButton from "@/_components/Header/SlideshowButton";
 
 interface HeaderProps {
   showSlideshowButton?: boolean;
@@ -19,7 +18,13 @@ export const Header: React.FC<HeaderProps> = ({
           href="/"
           aria-label="home"
         >
-          <Image src={Logo} alt="Logo" width={170} height={48} priority />
+          <Image
+            src="/assets/images/logo.svg"
+            alt="Logo"
+            width={170}
+            height={48}
+            priority
+          />
         </Link>
         {showSlideshowButton && <SlideshowButton />}
       </div>
