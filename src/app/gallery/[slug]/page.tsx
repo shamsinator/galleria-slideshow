@@ -4,6 +4,7 @@ import NotFound from "@/app/not-found/page";
 import { paintings } from "../../data";
 import ResponsiveImage from "@/_components/ResponsiveImage";
 import ResponsiveImagePlaceholder from "@/_components/ResponsiveImagePlaceholder";
+import ArtworkNavigation from "@/_components/ArtworkNavigation";
 
 import {
   LayoutContainer,
@@ -51,6 +52,13 @@ export default function ArtworkDetail({
 }) {
   const artwork = findArtworkBySlug(params.slug);
   const imageUrl = artwork?.images?.hero?.large;
+  const artistImage = artwork?.artist?.image;
+  const title = artwork?.name;
+  const artistName = artwork?.artist?.name;
+
+  const currentIndex = paintings.findIndex(
+    (item) => slugify(item.id) === params.slug
+  );
 
   if (!artwork) {
     return <NotFound />;
@@ -70,17 +78,17 @@ export default function ArtworkDetail({
             {/* TODO: implement lightbox feature */}
             <div className=" absolute w-56 h-32 lg:w-72 lg:h-56 lg:flex flex-col items-start justify-center bg-white -bottom-10 -left-1 p-4 md:bottom-auto md:left-auto md:w-72 md:h-48 md:p-8 md:right-[100px] md:-top-2 lg:-top-3 lg:-right-16 2xl:-top-2 2xl:-right-12 lg:p-10 2xl:pl-8 2xl:py-4 2xl:w-96 2xl:h-60">
               <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl text-pretty">
-                {artwork?.name}
+                {title}
               </h2>
               <h3 className="text-xs text-gray-500 my-3 md:text-sm 2xl:text-sm">
-                {artwork?.artist?.name}
+                {artistName}
               </h3>
             </div>
             <div className="absolute left-3 -bottom-28 md:left-auto md:top-48 md:right-40 lg:top-auto lg:-bottom-8 lg:-right-6">
-              {imageUrl ? (
+              {artistImage ? (
                 <Image
-                  src={imageUrl}
-                  alt={artwork?.name || "Artwork"}
+                  src={artistImage}
+                  alt={title + " by " + artistName}
                   width={128}
                   height={128}
                   className="w-[70px] h-[70px] md:w-[110px] md:h-[110px] lg:w-[128px] lg:h-[128px] 2xl:w-[200px] 2xl:h-[200px]"
@@ -105,7 +113,10 @@ export default function ArtworkDetail({
               Go to source
             </Link>
           </div>
-          {/* TODO: implement navigation to next and previous artwork */}
+          <ArtworkNavigation
+            paintings={paintings}
+            currentIndex={currentIndex}
+          />
         </div>
       </MainContentContainer>
     </LayoutContainer>
