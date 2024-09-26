@@ -57,72 +57,82 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
   );
 
   return (
-    <footer className="flex z-50 flex-col justify-between items-center w-full fixed bottom-0 left-0 px-2 lg:px-10 py-3 bg-white 2xl:px-12">
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-200 h-1 mb-4">
-        <div
-          className={`h-full ${
-            isLastArtwork ? "bg-black" : "bg-gray-500"
-          } progress-bar`}
-          style={{ width: `${progress}%` }}
-        ></div>
+    <footer className="flex flex-col items-center w-full fixed bottom-0 left-0 px-2 lg:px-10 py-3 bg-white z-10">
+      {/* Wrapper to match the content width */}
+      <div className="flex flex-col w-full max-w-[1280px] justify-between items-center">
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-200 h-1 mb-4">
+          <div
+            className={`h-full ${
+              isLastArtwork ? "bg-black" : "bg-gray-500"
+            } progress-bar`}
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+
+        {/* Content Wrapper */}
+        <div className="flex justify-between items-center w-full">
+          {/* Artwork Info aligned to the far left */}
+          <div className="flex flex-col items-start">
+            <h3 className="text-lg font-bold">
+              {paintings[currentIndex]?.name || "Unknown Name"}
+            </h3>
+            <small className="text-sm">
+              {paintings[currentIndex]?.artist?.name || "Unknown Artist"}
+            </small>
+          </div>
+
+          {/* Navigation Buttons aligned to the far right */}
+          <nav className="flex items-center gap-2">
+            {/* Previous Button */}
+            {prevPainting && (
+              <Link
+                href={`/gallery/${prevPainting.id}`}
+                aria-label="Go to previous artwork"
+              >
+                <button className="flex items-center px-4 py-2 text-white hover:opacity-50">
+                  <Image
+                    src="/assets/images/icon-back-button.svg"
+                    alt="previous icon"
+                    width={20}
+                    height={20}
+                  />
+                </button>
+              </Link>
+            )}
+
+            {/* Next Button (disabled if it's the last painting) */}
+            {nextPainting ? (
+              <Link
+                href={`/gallery/${nextPainting.id}`}
+                aria-label="Go to next artwork"
+              >
+                <button className="flex items-center px-4 py-2 text-white hover:opacity-50">
+                  <Image
+                    src="/assets/images/icon-next-button.svg"
+                    alt="next icon"
+                    width={20}
+                    height={20}
+                  />
+                </button>
+              </Link>
+            ) : (
+              <button
+                className="flex items-center px-4 py-2 bg-gray-400 text-white"
+                disabled
+                aria-disabled="true"
+              >
+                <Image
+                  src="/assets/images/icon-next-button.svg"
+                  alt="next icon"
+                  width={20}
+                  height={20}
+                />
+              </button>
+            )}
+          </nav>
+        </div>
       </div>
-
-      <h3 className="text-lg font-bold">
-        {paintings[currentIndex]?.name || "Unknown Name"}
-      </h3>
-      <small className="text-sm">
-        {paintings[currentIndex]?.artist?.name || "Unknown Artist"}
-      </small>
-
-      <nav className="flex justify-between">
-        {/* Previous Button */}
-        {prevPainting && (
-          <Link
-            href={`/gallery/${prevPainting.id}`}
-            aria-label="Go to previous artwork"
-          >
-            <button className="px-4 py-2 text-white hover:opacity-50">
-              <Image
-                src="/assets/images/icon-back-button.svg"
-                alt="previous icon"
-                width={20}
-                height={20}
-              />
-            </button>
-          </Link>
-        )}
-
-        {/* Next Button (disabled if it's the last painting) */}
-        {nextPainting ? (
-          <Link
-            href={`/gallery/${nextPainting.id}`}
-            aria-label="Go to next artwork"
-          >
-            <button className="px-4 py-2 text-white hover:opacity-50">
-              <Image
-                src="/assets/images/icon-next-button.svg"
-                alt="next icon"
-                width={20}
-                height={20}
-              />
-            </button>
-          </Link>
-        ) : (
-          <button
-            className="px-4 py-2 bg-gray-400 text-white"
-            disabled
-            aria-disabled="true"
-          >
-            <Image
-              src="/assets/images/icon-next-button.svg"
-              alt="next icon"
-              width={20}
-              height={20}
-            />
-          </button>
-        )}
-      </nav>
     </footer>
   );
 };
