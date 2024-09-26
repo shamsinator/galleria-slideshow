@@ -57,19 +57,18 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
   );
 
   return (
-    <footer className="flex flex-col items-center w-full fixed bottom-0 left-0 px-2 lg:px-10 py-3 bg-white z-10">
+    <footer className="flex flex-col items-center w-full fixed bottom-0 left-0  py-3 bg-white z-10">
+      {/* Progress Bar */}
+      <div className="w-full bg-gray-200 h-0.5 mb-4">
+        <div
+          className={`h-full ${
+            isLastArtwork ? "bg-black" : "bg-gray-500"
+          } progress-bar`}
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
       {/* Wrapper to match the content width */}
       <div className="flex flex-col w-full max-w-[1280px] justify-between items-center">
-        {/* Progress Bar */}
-        <div className="w-full bg-gray-200 h-1 mb-4">
-          <div
-            className={`h-full ${
-              isLastArtwork ? "bg-black" : "bg-gray-500"
-            } progress-bar`}
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-
         {/* Content Wrapper */}
         <div className="flex justify-between items-center w-full">
           {/* Artwork Info aligned to the far left */}
