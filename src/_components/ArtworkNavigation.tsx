@@ -27,10 +27,6 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
         if (nextProgress >= 100) {
           // @ts-ignore
           clearInterval(intervalRef.current!);
-          if (!isLastArtwork) {
-            router.push(`/gallery/${paintings[currentIndex + 1].id}`);
-          }
-          return prev; // Keep progress full after navigation
         }
         return nextProgress;
       });
@@ -42,7 +38,20 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [currentIndex, isLastArtwork, paintings, router]);
+  }, [currentIndex, paintings]);
+
+  // We separate the navigation logic (router.push) from the state update (setProgress).
+  // React issues a warning if we try to update the router during a state update cycle
+  // (like inside setState or setProgress). This is because React doesn't allow state
+  // updates from within the same render cycle that triggers them.
+  // By moving router.push into a useEffect that listens for changes in 'progress',
+  // we avoid this issue and ensure navigation happens only when the progress reaches 100.
+  useEffect(() => {
+    if (progress >= 100 && !isLastArtwork) {
+      // Perform navigation only after progress completes and it's not the last artwork.
+      router.push(`/gallery/${paintings[currentIndex + 1].id}`);
+    }
+  }, [progress, isLastArtwork, paintings, currentIndex, router]);
 
   // Memoize these values so they are only recalculated when currentIndex or paintings changes. This reduces unnecessary recomputations on re-renders.
   const prevPainting = useMemo(
@@ -57,7 +66,7 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
   );
 
   return (
-    <footer className="flex flex-col items-center w-full fixed bottom-0 left-0  py-3 bg-white z-10">
+    <footer className="flex flex-col items-center w-full fixed bottom-0 left-0 py-3 bg-white z-10">
       {/* Progress Bar */}
       <div className="w-full bg-gray-200 h-0.5 mb-4">
         <div
