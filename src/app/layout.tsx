@@ -1,8 +1,10 @@
+// import { ReactNode } from "react";
 import type { Metadata } from "next";
 import { ReactQueryClientProvider } from "@/_providers/ReactQueryClientProvider";
-
 import { Libre_Baskerville } from "next/font/google";
+import ClientModal from "@/_components/ClientModal";
 import "./globals.css";
+import { Suspense } from "react";
 
 const libreBaskerville = Libre_Baskerville({
   weight: ["400", "700"],
@@ -14,17 +16,24 @@ export const metadata: Metadata = {
   description: "CRUD with React Query and Supabase",
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface LayoutProps {
   children: React.ReactNode;
-}) {
+  modal?: React.ReactNode;
+}
+
+export default function RootLayout({ children, modal }: LayoutProps) {
+  // console.log("Modal prop:", modal);
+  // console.log("Layout props:", { children, modal });
   return (
     <ReactQueryClientProvider>
       <html lang="en">
         <body className={libreBaskerville.className}>
-          <div>
+          <div id="modal-root-id">
             <div>{children}</div>
+            {/* ClientModal is wrapped in a Suspense boundary becauseuseSearchParams() causes client-side rendering up to the closest Suspense boundary during static rendering */}
+            <Suspense fallback={null}>
+              {modal && <ClientModal modal={modal} />}
+            </Suspense>
           </div>
         </body>
       </html>

@@ -55,10 +55,13 @@ export default function ArtworkDetail({
   const artistImage = artwork?.artist?.image;
   const title = artwork?.name;
   const artistName = artwork?.artist?.name;
+  const galleryImage = artwork?.images?.gallery;
 
   const currentIndex = paintings.findIndex(
     (item) => slugify(item.id) === params.slug
   );
+
+  const currentSlug = findArtworkBySlug(params.slug)?.id;
 
   if (!artwork) {
     return <NotFound />;
@@ -75,7 +78,23 @@ export default function ArtworkDetail({
             ) : (
               <ResponsiveImagePlaceholder />
             )}
-            {/* TODO: implement lightbox feature */}
+            <Link
+              href={{
+                pathname: `/gallery/${currentSlug}`,
+                query: { modal: "true" },
+              }}
+              scroll={false}
+            >
+              <button className="px-3 py-4 bg-black text-white uppercase text-xs tracking-widest flex gap-2 items-center absolute left-5 top-5 md:top-auto md:bottom-5 hover:bg-opacity-65 transition-all">
+                <Image
+                  src="/assets/images/icon-view-image.svg"
+                  alt="view image icon"
+                  width={20}
+                  height={20}
+                />
+                View image
+              </button>
+            </Link>
             <div className=" absolute w-56 h-32 lg:w-72 lg:h-56 lg:flex flex-col items-start justify-center bg-white -bottom-10 -left-1 p-4 md:bottom-auto md:left-auto md:w-72 md:h-48 md:p-8 md:right-[100px] md:-top-2 lg:-top-3 lg:-right-16 2xl:-top-2 2xl:-right-12 lg:p-10 2xl:pl-8 2xl:py-4 2xl:w-96 2xl:h-60">
               <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl text-pretty">
                 {title}
