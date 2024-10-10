@@ -1,0 +1,3 @@
+{
+  "/gallery/:slug": "/paintings?slug=:slug"
+}

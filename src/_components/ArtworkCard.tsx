@@ -2,12 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ArtworkCard({
-  id,
+  slug,
   name,
   artist,
   path,
 }: {
-  id: string;
+  slug: string;
   name: string;
   artist: string;
   path: string;
@@ -19,7 +19,7 @@ export default function ArtworkCard({
         role="button"
         aria-label={name}
         tabIndex={0}
-        href={encodeURI(`/gallery/${id}`)}
+        href={encodeURI(`/gallery/${slug}`)}
       >
         <div className="relative">
           <Image

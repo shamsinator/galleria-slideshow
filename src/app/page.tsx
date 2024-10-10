@@ -1,5 +1,4 @@
 import MainHeader from "@/_components/Header/MainHeader";
-import { paintings } from "./data";
 import ArtworkGallery from "@/_components/ArtworkGallery";
 import {
   LayoutContainer,
@@ -11,7 +10,7 @@ export default function Home() {
     <LayoutContainer>
       <MainHeader />
       <MainContentContainer>
-        <ArtworkGallery paintings={paintings} />
+        <ArtworkGallery />
       </MainContentContainer>
     </LayoutContainer>
   );

@@ -16,4 +16,5 @@ export type Artwork = {
     };
     gallery: string;
   };
+  slug: string;
 };

@@ -49,7 +49,7 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
   useEffect(() => {
     if (progress >= 100 && !isLastArtwork) {
       // Perform navigation only after progress completes and it's not the last artwork.
-      router.push(`/gallery/${paintings[currentIndex + 1].id}`);
+      router.push(`/gallery/${paintings[currentIndex + 1].slug}`);
     }
   }, [progress, isLastArtwork, paintings, currentIndex, router]);
 
@@ -95,7 +95,7 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
             {/* Previous Button */}
             {prevPainting && (
               <Link
-                href={`/gallery/${prevPainting.id}`}
+                href={`/gallery/${prevPainting.slug}`}
                 aria-label="Go to previous artwork"
               >
                 <button className="flex items-center px-4 py-2 text-white hover:opacity-50">
@@ -112,7 +112,7 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
             {/* Next Button (disabled if it's the last painting) */}
             {nextPainting ? (
               <Link
-                href={`/gallery/${nextPainting.id}`}
+                href={`/gallery/${nextPainting.slug}`}
                 aria-label="Go to next artwork"
               >
                 <button className="flex items-center px-4 py-2 text-white hover:opacity-50">

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import NotFound from "@/app/not-found/page";
-import { paintings } from "../../data";
 import ResponsiveImage from "@/_components/ResponsiveImage";
 import ResponsiveImagePlaceholder from "@/_components/ResponsiveImagePlaceholder";
 import ArtworkNavigation from "@/_components/ArtworkNavigation";
+import { fetchAllPaintings, fetchPaintingBySlug } from "@/_services/getGallery";
 
 import {
   LayoutContainer,
@@ -12,23 +12,12 @@ import {
 } from "@/_components/LayoutContainer";
 import MainHeader from "@/_components/Header/MainHeader";
 
-// Utility function to slugify the artwork name (same as in the overview)
-function slugify(name: string) {
-  return name.toLowerCase().replace(/\s+/g, "-");
-}
-
-// Helper function to find the artwork by slug
-function findArtworkBySlug(slug: string) {
-  return paintings.find((item) => slugify(item.id) === slug);
-}
-
-// NOTE: generateMetadata function is automatically invoked by Nextjs, when a page is requested.
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }) {
-  const artwork = findArtworkBySlug(params.slug);
+  const artwork = await fetchPaintingBySlug(params.slug);
 
   if (!artwork) {
     return {
@@ -45,27 +34,24 @@ export async function generateMetadata({
   };
 }
 
-export default function ArtworkDetail({
+export default async function ArtworkDetail({
   params,
 }: {
   params: { slug: string };
 }) {
-  const artwork = findArtworkBySlug(params.slug);
-  const imageUrl = artwork?.images?.hero?.large;
-  const artistImage = artwork?.artist?.image;
-  const title = artwork?.name;
-  const artistName = artwork?.artist?.name;
-  const galleryImage = artwork?.images?.gallery;
-
-  const currentIndex = paintings.findIndex(
-    (item) => slugify(item.id) === params.slug
-  );
-
-  const currentSlug = findArtworkBySlug(params.slug)?.id;
+  const artwork = await fetchPaintingBySlug(params.slug);
 
   if (!artwork) {
     return <NotFound />;
   }
+
+  const imageUrl = artwork?.images?.hero?.large;
+  const artistImage = artwork?.artist?.image;
+  const title = artwork?.name;
+  const artistName = artwork?.artist?.name;
+  const currentIndex = (await fetchAllPaintings()).findIndex(
+    (item) => item.slug.toLowerCase().replace(/\s+/g, "-") === params.slug
+  );
 
   return (
     <LayoutContainer>
@@ -80,7 +66,7 @@ export default function ArtworkDetail({
             )}
             <Link
               href={{
-                pathname: `/gallery/${currentSlug}`,
+                pathname: `/gallery/${params.slug}`,
                 query: { modal: "true" },
               }}
               scroll={false}
@@ -95,7 +81,7 @@ export default function ArtworkDetail({
                 View image
               </button>
             </Link>
-            <div className=" absolute w-56 h-32 lg:w-72 lg:h-56 lg:flex flex-col items-start justify-center bg-white -bottom-10 -left-1 p-4 md:bottom-auto md:left-auto md:w-72 md:h-48 md:p-8 md:right-[100px] md:-top-2 lg:-top-3 lg:-right-16 2xl:-top-2 2xl:-right-12 lg:p-10 2xl:pl-8 2xl:py-4 2xl:w-96 2xl:h-60">
+            <div className="absolute w-56 h-32 lg:w-72 lg:h-56 lg:flex flex-col items-start justify-center bg-white -bottom-10 -left-1 p-4 md:bottom-auto md:left-auto md:w-72 md:h-48 md:p-8 md:right-[100px] md:-top-2 lg:-top-3 lg:-right-16 2xl:-top-2 2xl:-right-12 lg:p-10 2xl:pl-8 2xl:py-4 2xl:w-96 2xl:h-60">
               <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl text-pretty">
                 {title}
               </h2>
@@ -133,7 +119,7 @@ export default function ArtworkDetail({
             </Link>
           </div>
           <ArtworkNavigation
-            paintings={paintings}
+            paintings={await fetchAllPaintings()}
             currentIndex={currentIndex}
           />
         </div>
