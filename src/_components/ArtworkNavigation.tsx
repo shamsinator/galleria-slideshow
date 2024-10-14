@@ -53,6 +53,17 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
     }
   }, [progress, isLastArtwork, paintings, currentIndex, router]);
 
+  // if next or prev button used and if url contains "modal=true" remove it from the URL
+  useEffect(() => {
+    if (currentIndex > 0) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("modal") === "true") {
+        url.searchParams.delete("modal");
+        window.history.replaceState({}, "", url.toString());
+      }
+    }
+  }, [currentIndex]);
+
   // Memoize these values so they are only recalculated when currentIndex or paintings changes. This reduces unnecessary recomputations on re-renders.
   const prevPainting = useMemo(
     () => (currentIndex > 0 ? paintings[currentIndex - 1] : null),

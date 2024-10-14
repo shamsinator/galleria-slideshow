@@ -1,36 +1,41 @@
-import Image from "next/image";
-import { fetchPaintingBySlug } from "@/_services/getGallery"; // Use the new fetching method
-import CloseButton from "@/_components/CloseButton";
+import { fetchPaintingBySlug } from "@/_services/getGallery";
+import { ModalImage } from "@/app/gallery/[slug]/ModalImage";
+import { Modal } from "@/_components/Modal";
 
-interface ModalProps {
-  params: { slug: string };
-}
+export type PhotoData = {
+  id: number;
+  title: string;
+  path: string;
+};
 
-export default async function GalleryModal({ params }: ModalProps) {
-  const artwork = await fetchPaintingBySlug(params.slug);
-  const galleryImage = artwork?.images?.gallery;
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
-  if (!artwork || !galleryImage) {
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-        <p className="text-white">Artwork not found</p>
-        <CloseButton />
-      </div>
-    );
+/**
+ * A modal component that displays a PhotoDisplay component based on a given slug.
+ *
+ * When the modal is opened, it fetches the photo data from the server and displays
+ * the PhotoDisplay component inside the modal.
+ *
+ * @param {Props} props - The props object containing the slug of the photo to be displayed.
+ * @returns {JSX.Element} The modal component with the PhotoDisplay component inside.
+ */
+export default async function GalleryModal({ params: { slug } }: Props) {
+  const photoData = await fetchPaintingBySlug(slug);
+
+  if (!photoData?.slug) {
+    return <h1 className="text-center">No Photo Found.</h1>;
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-      <div className="relative">
-        <Image
-          src={galleryImage}
-          alt={artwork?.name || "Artwork Image"}
-          width={800}
-          height={600}
-          className="rounded-md"
-        />
-        <CloseButton />
-      </div>
-    </div>
+    <Modal>
+      <ModalImage
+        imageUrl={photoData.images.hero.large}
+        altText={photoData.name}
+      />
+    </Modal>
   );
 }
