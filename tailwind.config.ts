@@ -1,26 +1,33 @@
 import type { Config } from "tailwindcss";
+// import daisyui from "daisyui";
+
+const breakpoints = {
+  mobileMax: 330, // Max width for mobile
+  tabletMax: 690, // Max width for tablet
+  desktopMax: 1190, // Max width for desktop
+};
 
 const config: Config = {
+  mode: "jit",
   content: [
-    // "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    // "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    // "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/_components/**/*.{js,ts,jsx,tsx}",
+    "./src/_utils/**/*.{js,ts,jsx,tsx}",
+    "./src/_services/**/*.{js,ts,jsx,tsx}",
+    "./src/_hooks/**/*.{js,ts,jsx,tsx}",
   ],
-  // theme: {
-  //   extend: {
-  //     backgroundImage: {
-  //       "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-  //       "gradient-conic":
-  //         "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-  //     },
-  //   },
-  // },
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        // Tailwind uses min-width by default, but here we define max-widths
+        mobile: { max: `${breakpoints.mobileMax}px` }, // Up to 330px
+        tablet: { max: `${breakpoints.tabletMax}px` }, // Up to 690px
+        desktop: { max: `${breakpoints.desktopMax}px` }, // Up to 1190px
+      },
+    },
   },
   plugins: [require("daisyui")],
+  // plugins: [daisyui],
 };
+
 export default config;
