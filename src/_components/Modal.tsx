@@ -28,9 +28,9 @@ export function Modal({ children }: { children: React.ReactNode }) {
       <div className="relative w-full h-full max-w-7xl max-h-[90vh] m-4">
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 z-10 bg-white p-2 rounded-full"
+          className="absolute top-4 right-4 z-10 bg-white p-2 rounded-full uppercase"
         >
-          X
+          Close
         </button>
         {children}
       </div>
