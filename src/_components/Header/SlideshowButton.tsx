@@ -56,7 +56,11 @@ export default function SlideshowButton({
 
   // Display loading state if still fetching
   if (loading) {
-    return <span className={linkClassNames}>Loading...</span>;
+    return (
+      <span className={linkClassNames}>
+        Loading <span className="loading loading-spinner loading-sm"></span>
+      </span>
+    );
   }
 
   return (
