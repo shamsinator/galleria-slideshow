@@ -2,65 +2,57 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { twMerge } from "tailwind-merge";
-import { fetchAllPaintings } from "../../_services/getGallery"; // Fetch paintings from the JSON server
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { clientGalleryService } from "@/_services/gallery/client";
 
 export default function SlideshowButton({
   className = "",
 }: {
   className?: string;
 }) {
-  const [firstArtworkURL, setFirstArtworkURL] = useState<string>("/");
-  const [loading, setLoading] = useState(true);
-
-  // Fetch paintings and set the URL for the first artwork
-  useEffect(() => {
-    const fetchPaintings = async () => {
-      try {
-        const paintings = await fetchAllPaintings();
-        if (paintings.length > 0) {
-          const firstPainting = paintings[0];
-          setFirstArtworkURL(encodeURI(`/gallery/${firstPainting.slug}`)); // Use the slug from the fetched paintings
-        }
-      } catch (error) {
-        console.error("Error fetching paintings for slideshow:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPaintings();
-  }, []);
-
   const pathname = usePathname();
+
+  // Fetch paintings and set the URL for the first artwork using TanStack Query
+  const {
+    data: paintings,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["paintings"],
+    queryFn: async () => await clientGalleryService.getAllPaintings(),
+  });
+
+  // Extract the URL for the first artwork
+  const firstArtworkURL = useMemo(() => {
+    if (paintings && paintings.length > 0) {
+      return encodeURI(`/gallery/${paintings[0].slug}`);
+    }
+    return "/";
+  }, [paintings]);
 
   // Determine button text and URL based on the current pathname
   const { buttonText, buttonUrl } = useMemo(() => {
-    const nameUri = pathname.split("/");
-    if (nameUri.length > 1 && nameUri[1] === "gallery") {
-      return { buttonText: "stop slideshow", buttonUrl: "/" };
-    }
-    return { buttonText: "start slideshow", buttonUrl: firstArtworkURL };
+    const inGallery = pathname.startsWith("/gallery");
+    return {
+      buttonText: inGallery ? "stop slideshow" : "start slideshow",
+      buttonUrl: inGallery ? "/" : firstArtworkURL,
+    };
   }, [pathname, firstArtworkURL]);
 
-  // Memoize the class names
-  const linkClassNames = useMemo(
-    () =>
-      twMerge(
-        `tracking-wider leading-4 font-serif text-gray-500 uppercase hover:text-black transition-colors cursor-pointer`,
-        className
-      ),
-    [className]
-  );
+  const linkClassNames = `tracking-wider leading-4 font-serif text-gray-500 uppercase hover:text-black transition-colors cursor-pointer ${className}`;
 
-  // Display loading state if still fetching
-  if (loading) {
+  // Handle loading and error states
+  if (isLoading) {
     return (
       <span className={linkClassNames}>
-        Loading <span className="loading loading-spinner loading-sm"></span>
+        Loading<span className="loading loading-spinner loading-sm ml-2"></span>
       </span>
     );
+  }
+
+  if (isError) {
+    return <span className={linkClassNames}>Error loading slideshow</span>;
   }
 
   return (

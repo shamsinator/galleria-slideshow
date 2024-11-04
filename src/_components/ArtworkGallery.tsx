@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import PuffLoader from "react-spinners/PuffLoader";
 import { Artwork } from "../../types";
 import ArtworkCard from "@/_components/ArtworkCard";
-import { fetchAllPaintings } from "../_services/getGallery"; // Fetch paintings from the JSON server
+import { clientGalleryService } from "@/_services/gallery/client";
+// import { fetchAllPaintings } from "../_services/getGallery"; // Fetch paintings from the JSON server
 
 /**
  * A React component that displays a masonry layout of painting images.
@@ -17,7 +18,7 @@ const MasonryGrid = () => {
   useEffect(() => {
     const fetchPaintings = async () => {
       try {
-        const fetchedPaintings = await fetchAllPaintings();
+        const fetchedPaintings = await clientGalleryService.getAllPaintings();
         setPaintings(fetchedPaintings);
       } catch (error) {
         console.error("Error fetching paintings:", error);

@@ -9,7 +9,8 @@ import {
   MainContentContainer,
 } from "@/_components/LayoutContainer";
 import MainHeader from "@/_components/Header/MainHeader";
-import { fetchAllPaintings, fetchPaintingBySlug } from "@/_services/getGallery";
+// import { fetchAllPaintings, fetchPaintingBySlug } from "@/_services/getGallery";
+import { serverGalleryService } from "@/_services/gallery/server";
 import { ModalImage } from "./ModalImage";
 
 export async function generateMetadata({
@@ -17,7 +18,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const artwork = await fetchPaintingBySlug(params.slug);
+  const artwork = await serverGalleryService.getPaintingBySlug(params.slug);
 
   if (!artwork) {
     return {
@@ -40,8 +41,8 @@ export default async function ArtworkDetail({
   params: { slug: string };
 }) {
   const [artwork, allPaintings] = await Promise.all([
-    fetchPaintingBySlug(params.slug),
-    fetchAllPaintings(),
+    serverGalleryService.getPaintingBySlug(params.slug),
+    serverGalleryService.getAllPaintings(),
   ]);
 
   if (!artwork) {

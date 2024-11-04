@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { ReactQueryClientProvider } from "@/_providers/ReactQueryClientProvider";
 import { Libre_Baskerville } from "next/font/google";
 import "./globals.css";
-import { Suspense } from "react";
 
 const libreBaskerville = Libre_Baskerville({
   weight: ["400", "700"],

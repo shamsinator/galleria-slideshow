@@ -24,15 +24,17 @@ export default function ArtworkCard({
         <div className="relative">
           <Image
             className="group-hover:opacity-65 transition-all object-cover"
-            src={path.startsWith("/") ? path : `/${path}`} // Ensure the path starts with a leading slash
+            src={path}
             alt={name}
             width={300}
             height={400}
-            sizes="100vw"
-            style={{
-              width: "100%",
-              height: "auto",
-            }}
+            // sizes="100vw"
+            // style={{
+            //   width: "100%",
+            //   height: "auto",
+            // }}
+            sizes="(max-width: 768px) 100vw, 33vw"
+            loading="lazy"
           />
           <div className="absolute top-0 bottom-0 w-full h-full bg-gradient-to-t from-black via-transparent to-transparent" />
         </div>
