@@ -17,4 +17,5 @@ export type Artwork = {
     gallery: string;
   };
   slug: string;
+  is_active: boolean;
 };

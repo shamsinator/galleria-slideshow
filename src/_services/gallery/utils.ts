@@ -1,4 +1,4 @@
-import { Json } from "@/_utils/database.types";
+import { Json } from "@/types/supabase";
 import { Artwork } from "../../../types";
 import { generatePaintingSlug } from "../../_utils/slugify";
 
@@ -12,6 +12,7 @@ export interface SupabaseGalleryItem {
   artist: string;
   images: Json;
   created_at: string | null;
+  is_active: boolean | null;
 }
 
 // Shared transformation functions
@@ -27,6 +28,7 @@ export const transformToArtwork = (item: SupabaseGalleryItem): Artwork => {
     source: item.source,
     artist: artistData,
     images: images,
+    is_active: item.is_active ?? false,
     slug: generatePaintingSlug(item.name),
   };
 };
@@ -42,6 +44,7 @@ export const transformToSupabaseFormat = (
     source: artwork.source,
     artist: JSON.stringify(artwork.artist),
     images: artwork.images as Json,
+    is_active: artwork.is_active,
   };
 };
 

@@ -1,4 +1,4 @@
-import { Json } from "@/_utils/database.types";
+import { Json } from "@/types/supabase";
 import { Artwork } from "../../types";
 import { getSupabaseBrowserClient } from "@/_hooks/useSupabaseClient";
 import { generatePaintingSlug, findPaintingBySlug } from "../_utils/slugify";
@@ -13,6 +13,7 @@ interface SupabaseGalleryItem {
   artist: string; // Note: This is different from Artwork type
   images: Json; // Using Json type from Supabase
   created_at: string | null;
+  is_active: boolean | null;
 }
 
 // Helper function to transform Supabase data to Artwork type
@@ -28,6 +29,7 @@ const transformToArtwork = (item: SupabaseGalleryItem): Artwork => {
     source: item.source,
     artist: artistData,
     images: images,
+    is_active: item.is_active ?? false,
     slug: generatePaintingSlug(item.name),
   };
 };
@@ -85,6 +87,7 @@ const transformToSupabaseFormat = (
     source: artwork.source,
     artist: JSON.stringify(artwork.artist),
     images: artwork.images as Json,
+    is_active: artwork.is_active ?? false,
   };
 };
 
