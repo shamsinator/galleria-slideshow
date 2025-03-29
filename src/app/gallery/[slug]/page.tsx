@@ -9,7 +9,6 @@ import {
   MainContentContainer,
 } from "@/_components/LayoutContainer";
 import MainHeader from "@/_components/Header/MainHeader";
-// import { fetchAllPaintings, fetchPaintingBySlug } from "@/_services/getGallery";
 import { serverGalleryService } from "@/_services/gallery/server";
 import { ModalImage } from "./ModalImage";
 

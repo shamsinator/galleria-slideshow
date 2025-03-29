@@ -5,7 +5,6 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { Artwork } from "../../types";
 import ArtworkCard from "@/_components/ArtworkCard";
 import { clientGalleryService } from "@/_services/gallery/client";
-// import { fetchAllPaintings } from "../_services/getGallery"; // Fetch paintings from the JSON server
 
 /**
  * A React component that displays a masonry layout of painting images.
