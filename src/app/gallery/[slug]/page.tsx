@@ -39,13 +39,34 @@ export default async function ArtworkDetail({
 }: {
   params: { slug: string };
 }) {
+  console.log('Fetching artwork with slug:', params.slug);
+
   const [artwork, allPaintings] = await Promise.all([
     serverGalleryService.getPaintingBySlug(params.slug),
     serverGalleryService.getAllPaintings(),
   ]);
 
+  console.log('Fetched artwork:', artwork);
+
   if (!artwork) {
     return <NotFound />;
+  }
+
+  // Check if the artwork is active
+  if (!artwork.is_active) {
+    return (
+      <LayoutContainer>
+        <MainHeader />
+        <MainContentContainer>
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-8">Artwork Not Found</h1>
+            <p className="text-lg text-gray-500">
+              The artwork you are looking for does not exist or is not available.
+            </p>
+          </div>
+        </MainContentContainer>
+      </LayoutContainer>
+    );
   }
 
   const imageUrl = artwork?.images?.hero?.large;

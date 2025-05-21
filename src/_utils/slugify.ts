@@ -1,18 +1,15 @@
-import { Artwork } from "../../types";
-import normalizeAccents from "./normalizeAccents";
-
-// Function to generate a slug for a painting based on its name
+/**
+ * Function to generate a slug from a painting name
+ * NOTE: this is a JS only solution, good for short term use. 
+ * Adding a slug column to the database (recommended for production systems), will improve performance and reliability.
+ *
+ * @params  name - The name of the painting
+ * @returns A slugified version of the name, suitable for use in URLs
+ */
 export const generatePaintingSlug = (name: string): string => {
-  const normalizeAccent = normalizeAccents(
-    name.toLowerCase().replace(/\s+/g, "-")
-  );
-  return normalizeAccent;
-};
-
-// Function to find a painting by slug in an array of paintings
-export const findPaintingBySlug = (
-  paintings: Artwork[],
-  slug: string
-): Artwork | null => {
-  return paintings.find((painting) => painting.slug === slug) || null;
+  return name
+    .toLowerCase() // Convert to lowercase
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .normalize("NFD") // Normalize to decompose combined characters
+    .replace(/[\u0300-\u036f]/g, ""); // Remove diacritics
 };

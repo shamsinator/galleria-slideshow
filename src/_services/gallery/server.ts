@@ -12,6 +12,7 @@ export const serverGalleryService = {
    *
    * @param id The ID of the artwork to toggle
    * @returns A Promise resolving to true if successful
+   * @throws Error if the operation fails
    */
   async toggleArtworkVisibility(id: string): Promise<boolean> {
     const supabase = createSupabaseServer();
@@ -36,24 +37,26 @@ export const serverGalleryService = {
       if (updateError) throw updateError;
       return true;
     } catch (error) {
-      return handleSupabaseError(
-        error,
-        `toggling visibility for artwork ${id}`
-      );
+      handleSupabaseError(error, `toggling visibility for artwork ${id}`);
+      return false;
     }
   },
 
   /**
-   * Fetch all paintings from the Supabase database
+   * Fetch all paintings from the Supabase database with optional filtering
    *
-   * @param includeInactive Whether to include inactive artworks
+   * @param options Configuration options for the query
    * @returns An array of Artwork objects
    */
-  async getAllPaintings(includeInactive = false): Promise<Artwork[]> {
+  async getAllPaintings({
+    includeInactive = false,
+  } = {}): Promise<Artwork[]> {
     const supabase = createSupabaseServer();
 
     try {
-      let query = supabase.from("galleria").select("*");
+      let query = supabase
+        .from("galleria")
+        .select<string, SupabaseGalleryItem>("*")
 
       // Only show active artworks unless specifically requested
       if (!includeInactive) {
@@ -65,17 +68,19 @@ export const serverGalleryService = {
 
       return data?.map(transformToArtwork) || [];
     } catch (error) {
-      return handleSupabaseError(error, "fetching all paintings");
+      handleSupabaseError(error, "fetching paintings");
+      return [];
     }
   },
 
   /**
    * Fetch active paintings from the Supabase database
    *
+   * @param options Optional parameters for pagination and ordering
    * @returns An array of active Artwork objects
    */
-  async getActivePaintings(): Promise<Artwork[]> {
-    return this.getAllPaintings(false);
+  async getActivePaintings(options = {}): Promise<Artwork[]> {
+    return this.getAllPaintings({ ...options, includeInactive: false });
   },
 
   /**
@@ -88,7 +93,9 @@ export const serverGalleryService = {
   async getPaintingBySlug(slug: string): Promise<Artwork | null> {
     try {
       // Get all paintings including inactive ones
-      const paintings = await this.getAllPaintings(true);
+      const paintings = await this.getAllPaintings({
+        includeInactive: true,
+      });
       return paintings.find((painting) => painting.slug === slug) || null;
     } catch (error) {
       return handleSupabaseError(error, `fetching painting with slug ${slug}`);
@@ -99,7 +106,7 @@ export const serverGalleryService = {
    * Delete a painting from the Supabase database
    *
    * @param id The id of the painting to delete
-   * @returns A Promise that resolves if the deletion is successful
+   * @returns A Promise that resolves to true if the deletion is successful, false otherwise
    */
   async deletePainting(id: string): Promise<boolean> {
     const supabase = createSupabaseServer();
@@ -110,7 +117,8 @@ export const serverGalleryService = {
       if (error) throw error;
       return true;
     } catch (error) {
-      return handleSupabaseError(error, `deleting painting ${id}`);
+      handleSupabaseError(error, `deleting painting ${id}`);
+      return false;
     }
   },
 };

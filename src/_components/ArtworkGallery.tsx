@@ -17,7 +17,9 @@ const MasonryGrid = () => {
   useEffect(() => {
     const fetchPaintings = async () => {
       try {
-        const fetchedPaintings = await clientGalleryService.getAllPaintings();
+        const fetchedPaintings = await clientGalleryService.getAllPaintings({
+          includeInactive: false
+        });
         setPaintings(fetchedPaintings);
       } catch (error) {
         console.error("Error fetching paintings:", error);

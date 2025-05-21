@@ -10,7 +10,9 @@ import { serverGalleryService } from "@/_services/gallery/server";
 import { VisibilityToggle } from "@/_components/VisibilityToggle";
 
 const Dashboard = async () => {
-  const artwork = await serverGalleryService.getAllPaintings(true);
+  const artwork = await serverGalleryService.getAllPaintings({
+    includeInactive: true
+  });
 
   if (artwork) {
     return (

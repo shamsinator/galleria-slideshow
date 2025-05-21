@@ -6,6 +6,7 @@ import "./globals.css";
 const libreBaskerville = Libre_Baskerville({
   weight: ["400", "700"],
   subsets: ["latin"],
+  display: "swap", // Optional: Add display swap for better performance
 });
 
 export const metadata: Metadata = {

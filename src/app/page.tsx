@@ -10,6 +10,7 @@ export default function Home() {
   return (
     <LayoutContainer>
       <Navbar />
+      <hr></hr>
       <MainHeader />
       <MainContentContainer>
         <ArtworkGallery />
