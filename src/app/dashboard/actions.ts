@@ -3,44 +3,48 @@
 import { serverGalleryService } from "@/_services/gallery/server";
 import { revalidatePath } from "next/cache";
 
+const revalidatePaths = ["/dashboard", "/gallery", "/"];
+
 /**
  * Server action to toggle the visibility of an artwork
- *
- * @param id The ID of the artwork to toggle
- * @returns Object containing success status and optional error message
+ * 
+ * @param {string} artworkId - The ID of the artwork to toggle
+ * @returns {Promise<void>}
  */
-export async function toggleArtworkVisibility(id: string) {
-  if (!id || typeof id !== "string") {
-    return {
-      success: false,
-      error: "Invalid ID provided",
-    };
-  }
-
+export async function toggleArtworkVisibility(artworkId: string): Promise<void> {
   try {
-    const result = await serverGalleryService.toggleArtworkVisibility(id);
-
-    if (result) {
-      // Revalidate both dashboard and gallery pages
-      revalidatePath("/dashboard");
-      revalidatePath("/gallery");
-      revalidatePath("/");
-
-      return {
-        success: true,
-      };
-    } else {
-      return {
-        success: false,
-        error: "Failed to toggle artwork visibility",
-      };
-    }
+    await serverGalleryService.toggleArtworkVisibility(artworkId);
+    
+    // Revalidate both dashboard and gallery pages
+    revalidatePaths.forEach((path) => {
+      revalidatePath(path);
+    });
   } catch (error) {
     console.error("Error toggling artwork visibility:", error);
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    };
+    throw new Error("Failed to toggle artwork visibility");
+  }
+}
+
+/**
+ * Server action to delete an artwork from the gallery
+ * 
+ * @param {string} artworkId - The ID of the artwork to delete
+ * @returns {Promise<void>}
+ */
+export async function deleteArtwork(artworkId: string): Promise<void> {
+  if (!artworkId) {
+    throw new Error("Artwork ID is required");
+  }
+  
+  try {
+    await serverGalleryService.deletePainting(artworkId);
+    
+    // Revalidate both dashboard and gallery pages
+    revalidatePaths.forEach((path) => {
+      revalidatePath(path);
+    });
+  } catch (error) {
+    console.error("Error deleting artwork:", error);
+    throw new Error("Failed to delete artwork");
   }
 }

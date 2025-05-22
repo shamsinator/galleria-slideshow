@@ -8,6 +8,7 @@ import MainHeader from "@/_components/Header/MainHeader";
 import { PlusIcon } from "@/_components/Icons";
 import { serverGalleryService } from "@/_services/gallery/server";
 import { VisibilityToggle } from "@/_components/VisibilityToggle";
+import { DeleteButton } from "@/_components/DeleteButton";
 
 const Dashboard = async () => {
   const artwork = await serverGalleryService.getAllPaintings({
@@ -71,7 +72,10 @@ const Dashboard = async () => {
                       <td>
                         <div className="flex gap-2">
                           <button className="btn btn-warning">Edit</button>
-                          <button className="btn btn-error">Delete</button>
+                          <DeleteButton
+                            id={artwork.id}
+                            artworkName={artwork.name}
+                          />
                         </div>
                       </td>
                     </tr>
