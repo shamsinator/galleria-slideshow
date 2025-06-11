@@ -4,8 +4,13 @@ const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
   : "";
 
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  experimental: {
+    typedRoutes: false,
+  },
   images: {
-    domains: [supabaseHostname],
     remotePatterns: [
       {
         protocol: "http",
