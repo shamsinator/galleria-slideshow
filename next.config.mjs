@@ -12,6 +12,10 @@ const nextConfig = {
         hostname: "localhost",
         port: "3000",
       },
+      ...(supabaseHostname ? [{
+        protocol: "https",
+        hostname: supabaseHostname,
+      }] : []),
     ],
   },
   env: {
