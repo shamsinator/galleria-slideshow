@@ -12,6 +12,7 @@ import MainHeader from "@/_components/Header/MainHeader";
 import { serverGalleryService } from "@/_services/gallery/server";
 import { ModalImage } from "./ModalImage";
 
+// This file handles the dynamic route for artwork details in the gallery.
 export async function generateMetadata({
   params,
 }: {
@@ -39,8 +40,10 @@ export default async function ArtworkDetail({
 }: {
   params: { slug: string };
 }) {
-  console.log('Fetching artwork with slug:', params.slug);
 
+
+  // Fetch the artwork and all paintings in parallel
+  // This allows us to display the artwork details and navigation without waiting for both to finish
   const [artwork, allPaintings] = await Promise.all([
     serverGalleryService.getPaintingBySlug(params.slug),
     serverGalleryService.getAllPaintings(),

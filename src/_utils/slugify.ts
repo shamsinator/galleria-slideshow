@@ -8,8 +8,7 @@
  */
 export const generatePaintingSlug = (name: string): string => {
   return name
-    .toLowerCase() // Convert to lowercase
-    .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .normalize("NFD") // Normalize to decompose combined characters
-    .replace(/[\u0300-\u036f]/g, ""); // Remove diacritics
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 };

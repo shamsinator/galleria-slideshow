@@ -13,12 +13,40 @@ export interface SupabaseGalleryItem {
   images: Json;
   created_at: string | null;
   is_active: boolean | null;
+  storage_path?: string;
 }
 
 // Shared transformation functions
 export const transformToArtwork = (item: SupabaseGalleryItem): Artwork => {
   const artistData = JSON.parse(item.artist);
-  const images = item.images as Artwork["images"];
+  const storedImages = item.images as Artwork["images"];
+  
+  // Generate folder name from the artwork title
+  const folderName = generatePaintingSlug(item.name);
+  
+  // Helper function to inject folder into existing URL
+  const addFolderToUrl = (url: string): string => {
+    return url.replace(
+      '/artwork-images/', 
+      `/artwork-images/${folderName}/`
+    );
+  };
+  
+  // Transform all image URLs
+  const images = {
+    hero: {
+      large: addFolderToUrl(storedImages.hero.large),
+      small: addFolderToUrl(storedImages.hero.small)
+    },
+    gallery: addFolderToUrl(storedImages.gallery),
+    thumbnail: addFolderToUrl(storedImages.thumbnail)
+  };
+
+  // Also update artist image
+  const updatedArtist = {
+    ...artistData,
+    image: addFolderToUrl(artistData.image)
+  };
 
   return {
     id: item.id,
@@ -26,10 +54,10 @@ export const transformToArtwork = (item: SupabaseGalleryItem): Artwork => {
     year: item.year,
     description: item.description,
     source: item.source,
-    artist: artistData,
+    artist: updatedArtist,
     images: images,
     is_active: item.is_active ?? false,
-    slug: generatePaintingSlug(item.name),
+    slug: folderName,
   };
 };
 

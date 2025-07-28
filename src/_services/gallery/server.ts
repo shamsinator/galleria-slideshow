@@ -5,6 +5,7 @@ import {
   transformToArtwork,
   handleSupabaseError,
 } from "./utils";
+import { CreateArtworkData } from "@/app/dashboard/actions";
 
 export const serverGalleryService = {
   /**
@@ -73,6 +74,54 @@ export const serverGalleryService = {
     }
   },
 
+   /**
+   * Creates a new artwork matching the SQL schema
+   * 
+   * @param {CreateArtworkData} artworkData - The artwork data to create
+   * @returns {Promise<{id: string}>} - The created artwork with id
+   */
+  async createArtwork(artworkData: CreateArtworkData): Promise<{id: string}> {
+    const supabase = createSupabaseServer();
+    const storagePath = await createArtworkStorage(artworkData.name);
+
+    // Clean up empty strings to null for optional fields
+    const cleanImages = {
+      hero: {
+        large: artworkData.images.hero?.large?.trim() || null,
+        small: artworkData.images.hero?.small?.trim() || null,
+      },
+      gallery: artworkData.images.gallery?.trim() || null,
+      thumbnail: artworkData.images.thumbnail?.trim() || null,
+    };
+
+    const cleanArtist = {
+      name: artworkData.artist.name.trim(),
+      image: artworkData.artist.image?.trim() || null,
+    };
+
+    const { data: newArtwork, error } = await supabase.from("galleria").insert({
+        // Basic fields
+        name: artworkData.name.trim(),
+        year: artworkData.year,
+        description: artworkData.description?.trim() || null,
+        source: artworkData.source?.trim() || null,
+        
+        // JSON fields
+        artist: cleanArtist,
+        images: cleanImages,
+
+        storage_path: storagePath,
+
+        // System fields
+        is_active: artworkData.isActive ?? true,
+        created_at: artworkData.createdAt || new Date(),
+    }).select().single();
+
+    if (error) throw error;
+
+    return { id: newArtwork.id };
+  },
+
   /**
    * Fetch active paintings from the Supabase database
    *
@@ -122,3 +171,7 @@ export const serverGalleryService = {
     }
   },
 };
+
+function createArtworkStorage(name: string) {
+  throw new Error("Function not implemented.");
+}

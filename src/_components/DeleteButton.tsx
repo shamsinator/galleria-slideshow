@@ -101,7 +101,7 @@ export function DeleteButton({ id, artworkName }: DeleteButtonProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Artwork</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "<strong>{artworkName}</strong>"? 
+            Are you sure you want to delete &ldquo;<strong>{artworkName}</strong>&rdquo;? 
             This action cannot be undone and will permanently remove the artwork 
             from your gallery.
           </AlertDialogDescription>

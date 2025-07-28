@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ReactQueryClientProvider } from "@/_providers/ReactQueryClientProvider";
 import { Libre_Baskerville } from "next/font/google";
+import { ReactNode } from "react";
 import "./globals.css";
 
 const libreBaskerville = Libre_Baskerville({
@@ -14,12 +15,13 @@ export const metadata: Metadata = {
   description: "CRUD with React Query and Supabase",
 };
 
-interface LayoutProps {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-}
-
-export default function RootLayout({ children, modal }: LayoutProps) {
+export default function RootLayout({
+  children,
+  modal,
+}: {
+  children: ReactNode;
+  modal: ReactNode;
+}) {
   return (
     <ReactQueryClientProvider>
       <html lang="en">
