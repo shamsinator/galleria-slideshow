@@ -1,36 +1,158 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Galleria
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-14.2.16-black)
+![React](https://img.shields.io/badge/React-18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Supabase](https://img.shields.io/badge/Supabase-2.45.1-green)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38B2AC)
 
-First, run the development server:
+A modern, responsive art gallery application that showcases artwork with detailed information and a beautiful masonry layout.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Overview
+
+Galleria is a digital art exhibition platform that allows users to browse through a collection of artwork in an elegant masonry grid layout. Users can view detailed information about each artwork, including high-resolution images, artist information, year of creation, and descriptions. The application also includes an admin dashboard for managing the artwork collection.
+
+## Features
+
+- **Masonry Grid Gallery**: Browse artwork in a responsive, visually appealing layout
+- **Detailed Artwork View**: View comprehensive information about each artwork
+- **Slideshow Navigation**: Navigate between artwork in a slideshow format
+- **Modal Image View**: Expand artwork images for a closer look
+- **Admin Dashboard**: Manage artwork with features to add, edit, delete, and toggle visibility
+- **Responsive Design**: Optimized for all device sizes from mobile to desktop
+- **Server-Side Rendering**: Fast page loads and improved SEO
+- **Image Optimization**: Efficient loading of artwork images
+
+## Technologies Used
+
+### Frontend
+- **Next.js**: React framework for server-side rendering and static site generation
+- **React**: JavaScript library for building user interfaces
+- **TypeScript**: Static type checking for improved code quality
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **DaisyUI**: Component library for Tailwind CSS
+- **React Query**: Data fetching and state management
+
+### Backend
+- **Supabase**: Backend as a service (BaaS) with PostgreSQL database
+- **Next.js API Routes**: Server-side API endpoints
+
+### Tools & Libraries
+- **Radix UI**: Accessible UI components
+- **Lucide React**: Icon library
+- **React Spinners**: Loading indicators
+
+## Installation
+
+Follow these steps to set up the project locally:
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/galleria-slideshow.git
+   cd galleria-slideshow
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   
+   Create a `.env.local` file in the root directory with the following variables:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. **Generate Supabase types (optional)**
+   ```bash
+   npm run update-types
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+   
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Usage
+
+### Browsing the Gallery
+
+1. The homepage displays a masonry grid of artwork thumbnails.
+2. Click on any artwork to view its detailed information.
+3. In the detailed view, you can:
+   - View high-resolution images
+   - Read about the artwork and artist
+   - Navigate to previous/next artwork
+   - Click "View Image" to see the artwork in a modal view
+
+### Using the Admin Dashboard
+
+1. Navigate to the dashboard at `/dashboard`.
+2. Here you can:
+   - View all artwork in a table format
+   - Add new artwork using the "Add Artwork" button
+   - Edit existing artwork
+   - Delete artwork
+   - Toggle the visibility of artwork
+
+## Folder Structure
+
+```
+galleria-slideshow/
+├── public/                 # Static assets
+├── src/
+│   ├── app/                # Next.js app router pages
+│   │   ├── dashboard/      # Admin dashboard
+│   │   ├── gallery/        # Artwork detail pages
+│   │   └── page.tsx        # Homepage
+│   ├── _components/        # Reusable UI components
+│   ├── _hooks/             # Custom React hooks
+│   ├── _providers/         # Context providers
+│   ├── _services/          # Service layer for API interactions
+│   └── _utils/             # Utility functions
+├── supabase/               # Supabase configuration
+├── types.ts                # Global TypeScript types
+├── next.config.mjs         # Next.js configuration
+└── tailwind.config.ts      # Tailwind CSS configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contact
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Website - [shamsinator.nl](https://www.shamsinator.nl)
+- Frontend Mentor - [@shamsinator](https://www.frontendmentor.io/profile/shamsinator)
+- X - [@Amirsbay](https://x.com/Amirsbay)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+[Back to top](#Galleria)
