@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   description: "CRUD with React Query and Supabase",
 };
 
+// Root layout component that wraps the application with necessary providers
 export default function RootLayout({
   children,
-  modal,
 }: {
   children: ReactNode;
   modal: ReactNode;
@@ -27,7 +27,6 @@ export default function RootLayout({
       <html lang="en">
         <body className={libreBaskerville.className}>
           <div id="modal-root-id">
-            {modal}
             <div>{children}</div>
           </div>
         </body>

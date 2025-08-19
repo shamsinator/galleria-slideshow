@@ -4,7 +4,7 @@ export const getSupabaseConfig = () => {
 
   if (!supabaseUrl || !supabaseKey) {
     throw new Error(
-      "Missing Supabase environment variables. Check your .env.local file."
+      "Missing Supabase environment variables. Check your .env.local file.",
     );
   }
 

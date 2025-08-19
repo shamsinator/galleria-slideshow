@@ -1,9 +1,9 @@
 import { Artwork } from "../../../types";
 import { createSupabaseServer } from "@/_utils/createSupabaseServer";
 import {
+  handleSupabaseError,
   SupabaseGalleryItem,
   transformToArtwork,
-  handleSupabaseError,
 } from "./utils";
 import { CreateArtworkData } from "@/app/dashboard/actions";
 
@@ -49,15 +49,14 @@ export const serverGalleryService = {
    * @param options Configuration options for the query
    * @returns An array of Artwork objects
    */
-  async getAllPaintings({
-    includeInactive = false,
-  } = {}): Promise<Artwork[]> {
+  async getAllPaintings({ includeInactive = false } = {}): Promise<Artwork[]> {
     const supabase = createSupabaseServer();
 
     try {
       let query = supabase
         .from("galleria")
         .select<string, SupabaseGalleryItem>("*")
+        .order("created_at", { ascending: false }); // Add ordering for consistent results
 
       // Only show active artworks unless specifically requested
       if (!includeInactive) {
@@ -74,13 +73,13 @@ export const serverGalleryService = {
     }
   },
 
-   /**
+  /**
    * Creates a new artwork matching the SQL schema
-   * 
+   *
    * @param {CreateArtworkData} artworkData - The artwork data to create
    * @returns {Promise<{id: string}>} - The created artwork with id
    */
-  async createArtwork(artworkData: CreateArtworkData): Promise<{id: string}> {
+  async createArtwork(artworkData: CreateArtworkData): Promise<{ id: string }> {
     const supabase = createSupabaseServer();
     const storagePath = await createArtworkStorage(artworkData.name);
 
@@ -99,13 +98,15 @@ export const serverGalleryService = {
       image: artworkData.artist.image?.trim() || null,
     };
 
-    const { data: newArtwork, error } = await supabase.from("galleria").insert({
+    const { data: newArtwork, error } = await supabase
+      .from("galleria")
+      .insert({
         // Basic fields
         name: artworkData.name.trim(),
         year: artworkData.year,
         description: artworkData.description?.trim() || null,
         source: artworkData.source?.trim() || null,
-        
+
         // JSON fields
         artist: cleanArtist,
         images: cleanImages,
@@ -115,7 +116,9 @@ export const serverGalleryService = {
         // System fields
         is_active: artworkData.isActive ?? true,
         created_at: artworkData.createdAt || new Date(),
-    }).select().single();
+      })
+      .select()
+      .single();
 
     if (error) throw error;
 

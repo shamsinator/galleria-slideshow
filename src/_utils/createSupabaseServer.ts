@@ -31,7 +31,7 @@ export function createSupabaseServer(): SupabaseClient<Database> {
       setAll(cookiesToSet: Cookie[]): void {
         try {
           cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
+            cookieStore.set(name, value, options),
           );
         } catch {
           // The `setAll` method was called from a Server Component.

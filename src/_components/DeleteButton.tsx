@@ -89,21 +89,18 @@ export function DeleteButton({ id, artworkName }: DeleteButtonProps) {
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <button
-          className="btn btn-error"
-          aria-label="Delete artwork"
-        >
+        <button className="btn btn-error" aria-label="Delete artwork">
           <TrashIcon /> Delete
         </button>
       </AlertDialogTrigger>
-      
+
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Artwork</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete &ldquo;<strong>{artworkName}</strong>&rdquo;? 
-            This action cannot be undone and will permanently remove the artwork 
-            from your gallery.
+            Are you sure you want to delete &ldquo;
+            <strong>{artworkName}</strong>&rdquo;? This action cannot be undone
+            and will permanently remove the artwork from your gallery.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -116,10 +113,7 @@ export function DeleteButton({ id, artworkName }: DeleteButtonProps) {
         )}
 
         <AlertDialogFooter>
-          <AlertDialogCancel 
-            onClick={handleModalClose}
-            disabled={isLoading}
-          >
+          <AlertDialogCancel onClick={handleModalClose} disabled={isLoading}>
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction

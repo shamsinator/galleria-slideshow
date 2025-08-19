@@ -1,9 +1,6 @@
 import { Artwork } from "../../../types";
 import { getSupabaseBrowserClient } from "@/_hooks/useSupabaseClient";
-import {
-  SupabaseGalleryItem,
-  transformToArtwork
-} from "./utils";
+import { SupabaseGalleryItem, transformToArtwork } from "./utils";
 
 export const clientGalleryService = {
   /**
@@ -11,15 +8,13 @@ export const clientGalleryService = {
    *
    * @returns An array of Artwork objects
    */
-  async getAllPaintings({
-    includeInactive = true
-  }): Promise<Artwork[]> {
+  async getAllPaintings({ includeInactive = true }): Promise<Artwork[]> {
     const supabase = getSupabaseBrowserClient();
 
     try {
       let query = supabase
-      .from("galleria")
-      .select<string, SupabaseGalleryItem>("*");
+        .from("galleria")
+        .select<string, SupabaseGalleryItem>("*");
 
       if (!includeInactive) {
         query = query.eq("is_active", true);

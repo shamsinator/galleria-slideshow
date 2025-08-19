@@ -41,14 +41,16 @@ export interface CreateArtworkData {
 
 /**
  * Toggles the visibility of an artwork
- * 
+ *
  * @param {string} artworkId - The ID of the artwork to toggle
  * @returns {Promise<void>}
  */
-export async function toggleArtworkVisibility(artworkId: string): Promise<void> {
+export async function toggleArtworkVisibility(
+  artworkId: string,
+): Promise<void> {
   try {
     await serverGalleryService.toggleArtworkVisibility(artworkId);
-    
+
     // Revalidate both dashboard and gallery pages
     revalidatePaths.forEach((path) => {
       revalidatePath(path);
@@ -61,7 +63,7 @@ export async function toggleArtworkVisibility(artworkId: string): Promise<void> 
 
 /**
  * Server action to delete an artwork from the gallery
- * 
+ *
  * @param {string} artworkId - The ID of the artwork to delete
  * @returns {Promise<void>}
  */
@@ -69,10 +71,10 @@ export async function deleteArtwork(artworkId: string): Promise<void> {
   if (!artworkId) {
     throw new Error("Artwork ID is required");
   }
-  
+
   try {
     await serverGalleryService.deletePainting(artworkId);
-    
+
     // Revalidate both dashboard and gallery pages
     revalidatePaths.forEach((path) => {
       revalidatePath(path);
@@ -85,7 +87,7 @@ export async function deleteArtwork(artworkId: string): Promise<void> {
 
 /**
  * Creates a new artwork
- * 
+ *
  * @param {CreateArtworkData} artworkData - The artwork data to create
  * @returns {Promise<{success: boolean, artworkId?: string, error?: string}>}
  */
@@ -99,12 +101,16 @@ export async function createArtwork(artworkData: CreateArtworkData): Promise<{
     if (!artworkData.name?.trim()) {
       return { success: false, error: "Artwork title is required" };
     }
-    
+
     if (!artworkData.artist?.name?.trim()) {
       return { success: false, error: "Artist name is required" };
     }
-    
-    if (!artworkData.year || artworkData.year < 1000 || artworkData.year > new Date().getFullYear()) {
+
+    if (
+      !artworkData.year ||
+      artworkData.year < 1000 ||
+      artworkData.year > new Date().getFullYear()
+    ) {
       return { success: false, error: "Please enter a valid year" };
     }
 
@@ -126,19 +132,19 @@ export async function createArtwork(artworkData: CreateArtworkData): Promise<{
 
     // Create the artwork
     const newArtwork = await serverGalleryService.createArtwork(artworkData);
-    
+
     // Revalidate the dashboard page to show the new artwork
     revalidatePath("/dashboard");
-    
-    return { 
-      success: true, 
-      artworkId: newArtwork.id 
+
+    return {
+      success: true,
+      artworkId: newArtwork.id,
     };
   } catch (error) {
     console.error("Error creating artwork:", error);
-    return { 
-      success: false, 
-      error: "Failed to create artwork. Please try again." 
+    return {
+      success: false,
+      error: "Failed to create artwork. Please try again.",
     };
   }
 }

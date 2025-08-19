@@ -9,13 +9,13 @@ export async function createArtworkStorage(name: string) {
   try {
     // Create an empty file to initialize the folder
     const { error } = await supabase.storage
-      .from('gallery')
-      .upload(`${storagePath}/.folder`, new Blob(['']));
+      .from("gallery")
+      .upload(`${storagePath}/.folder`, new Blob([""]));
 
     if (error) throw error;
     return storagePath;
   } catch (error) {
-    console.error('Error creating storage folder:', error);
+    console.error("Error creating storage folder:", error);
     throw error;
   }
 }

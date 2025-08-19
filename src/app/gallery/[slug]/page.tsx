@@ -40,8 +40,6 @@ export default async function ArtworkDetail({
 }: {
   params: { slug: string };
 }) {
-
-
   // Fetch the artwork and all paintings in parallel
   // This allows us to display the artwork details and navigation without waiting for both to finish
   const [artwork, allPaintings] = await Promise.all([
@@ -49,7 +47,7 @@ export default async function ArtworkDetail({
     serverGalleryService.getAllPaintings(),
   ]);
 
-  console.log('Fetched artwork:', artwork);
+  console.log("Fetched artwork:", artwork);
 
   if (!artwork) {
     return <NotFound />;
@@ -64,7 +62,8 @@ export default async function ArtworkDetail({
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-8">Artwork Not Found</h1>
             <p className="text-lg text-gray-500">
-              The artwork you are looking for does not exist or is not available.
+              The artwork you are looking for does not exist or is not
+              available.
             </p>
           </div>
         </MainContentContainer>
@@ -77,7 +76,7 @@ export default async function ArtworkDetail({
   const title = artwork?.name;
   const artistName = artwork?.artist?.name;
   const currentIndex = allPaintings.findIndex(
-    (item) => item.slug.toLowerCase().replace(/\s+/g, "-") === params.slug
+    (item) => item.slug.toLowerCase().replace(/\s+/g, "-") === params.slug,
   );
 
   return (

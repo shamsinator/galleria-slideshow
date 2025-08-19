@@ -67,13 +67,13 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
   // Memoize these values so they are only recalculated when currentIndex or paintings changes. This reduces unnecessary recomputations on re-renders.
   const prevPainting = useMemo(
     () => (currentIndex > 0 ? paintings[currentIndex - 1] : null),
-    [currentIndex, paintings]
+    [currentIndex, paintings],
   );
 
   const nextPainting = useMemo(
     () =>
       currentIndex < paintings.length - 1 ? paintings[currentIndex + 1] : null,
-    [currentIndex, paintings]
+    [currentIndex, paintings],
   );
 
   return (

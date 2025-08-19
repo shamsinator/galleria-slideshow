@@ -22,7 +22,8 @@ export default function SlideshowButton({ className = "" }) {
     error,
   } = useQuery({
     queryKey: ["paintings"],
-    queryFn: () => clientGalleryService.getAllPaintings({ includeInactive: false }),
+    queryFn: () =>
+      clientGalleryService.getAllPaintings({ includeInactive: false }),
     // Add better caching and stale data handling
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
@@ -39,10 +40,13 @@ export default function SlideshowButton({ className = "" }) {
   }, [paintings]);
 
   // Determine button text and URL based on current path
-  const buttonConfig = useMemo(() => ({
-    text: inGallery ? "stop slideshow" : "start slideshow",
-    url: inGallery ? "/" : firstArtworkURL,
-  }), [inGallery, firstArtworkURL]);
+  const buttonConfig = useMemo(
+    () => ({
+      text: inGallery ? "stop slideshow" : "start slideshow",
+      url: inGallery ? "/" : firstArtworkURL,
+    }),
+    [inGallery, firstArtworkURL],
+  );
 
   // Base styles for link component
   const linkClassNames = `tracking-wider leading-4 font-serif text-gray-500 uppercase hover:text-black transition-colors cursor-pointer ${className}`;

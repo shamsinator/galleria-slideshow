@@ -20,32 +20,29 @@ export interface SupabaseGalleryItem {
 export const transformToArtwork = (item: SupabaseGalleryItem): Artwork => {
   const artistData = JSON.parse(item.artist);
   const storedImages = item.images as Artwork["images"];
-  
+
   // Generate folder name from the artwork title
   const folderName = generatePaintingSlug(item.name);
-  
+
   // Helper function to inject folder into existing URL
   const addFolderToUrl = (url: string): string => {
-    return url.replace(
-      '/artwork-images/', 
-      `/artwork-images/${folderName}/`
-    );
+    return url.replace("/artwork-images/", `/artwork-images/${folderName}/`);
   };
-  
+
   // Transform all image URLs
   const images = {
     hero: {
       large: addFolderToUrl(storedImages.hero.large),
-      small: addFolderToUrl(storedImages.hero.small)
+      small: addFolderToUrl(storedImages.hero.small),
     },
     gallery: addFolderToUrl(storedImages.gallery),
-    thumbnail: addFolderToUrl(storedImages.thumbnail)
+    thumbnail: addFolderToUrl(storedImages.thumbnail),
   };
 
   // Also update artist image
   const updatedArtist = {
     ...artistData,
-    image: addFolderToUrl(artistData.image)
+    image: addFolderToUrl(artistData.image),
   };
 
   return {
@@ -62,7 +59,7 @@ export const transformToArtwork = (item: SupabaseGalleryItem): Artwork => {
 };
 
 export const transformToSupabaseFormat = (
-  artwork: Artwork
+  artwork: Artwork,
 ): Omit<SupabaseGalleryItem, "created_at"> => {
   return {
     id: artwork.id,

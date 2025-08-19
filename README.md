@@ -38,6 +38,7 @@ Galleria is a digital art exhibition platform that allows users to browse throug
 ## Technologies Used
 
 ### Frontend
+
 - **Next.js**: React framework for server-side rendering and static site generation
 - **React**: JavaScript library for building user interfaces
 - **TypeScript**: Static type checking for improved code quality
@@ -46,10 +47,12 @@ Galleria is a digital art exhibition platform that allows users to browse throug
 - **React Query**: Data fetching and state management
 
 ### Backend
+
 - **Supabase**: Backend as a service (BaaS) with PostgreSQL database
 - **Next.js API Routes**: Server-side API endpoints
 
 ### Tools & Libraries
+
 - **Radix UI**: Accessible UI components
 - **Lucide React**: Icon library
 - **React Spinners**: Loading indicators
@@ -59,36 +62,41 @@ Galleria is a digital art exhibition platform that allows users to browse throug
 Follow these steps to set up the project locally:
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/galleria-slideshow.git
    cd galleria-slideshow
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Create a `.env.local` file in the root directory with the following variables:
+
    ```
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
 4. **Generate Supabase types (optional)**
+
    ```bash
    npm run update-types
    ```
 
 5. **Start the development server**
+
    ```bash
    npm run dev
    ```
 
 6. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
 ## Usage
@@ -155,4 +163,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - X - [@Amirsbay](https://x.com/Amirsbay)
 
 ---
+
 [Back to top](#Galleria)

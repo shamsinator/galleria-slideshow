@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { createArtwork, CreateArtworkData, ArtistData, ArtworkImages } from "@/app/dashboard/actions";
+import {
+  createArtwork,
+  CreateArtworkData,
+  ArtistData,
+  ArtworkImages,
+} from "@/app/dashboard/actions";
 import { PlusIcon, ImageIcon, LinkIcon, UserIcon } from "@/_components/Icons";
 import {
   AlertDialog,
@@ -48,7 +53,7 @@ export function AddArtworkModal() {
   // Modal state
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Form data state
   const [formData, setFormData] = useState<CreateArtworkData>({
     name: "",
@@ -69,7 +74,7 @@ export function AddArtworkModal() {
     },
     isActive: true,
   });
-  
+
   const [errors, setErrors] = useState<FormErrors>({});
 
   /**
@@ -77,21 +82,29 @@ export function AddArtworkModal() {
    */
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = "Artwork title is required";
     }
-    
+
     if (!formData.artist.name.trim()) {
       newErrors.artistName = "Artist name is required";
     }
-    
-    if (!formData.year || formData.year < 1000 || formData.year > new Date().getFullYear()) {
+
+    if (
+      !formData.year ||
+      formData.year < 1000 ||
+      formData.year > new Date().getFullYear()
+    ) {
       newErrors.year = "Please enter a valid year";
     }
-    
+
     // URL validation helper
-    const validateUrl = (url: string, fieldName: string, errorKey: keyof FormErrors) => {
+    const validateUrl = (
+      url: string,
+      fieldName: string,
+      errorKey: keyof FormErrors,
+    ) => {
       if (url && url.trim()) {
         try {
           new URL(url);
@@ -100,14 +113,26 @@ export function AddArtworkModal() {
         }
       }
     };
-    
+
     validateUrl(formData.source || "", "Source URL", "source");
     validateUrl(formData.artist.image || "", "Artist image URL", "artistImage");
-    validateUrl(formData.images.hero?.large || "", "Hero large image URL", "heroLarge");
-    validateUrl(formData.images.hero?.small || "", "Hero small image URL", "heroSmall");
+    validateUrl(
+      formData.images.hero?.large || "",
+      "Hero large image URL",
+      "heroLarge",
+    );
+    validateUrl(
+      formData.images.hero?.small || "",
+      "Hero small image URL",
+      "heroSmall",
+    );
     validateUrl(formData.images.gallery || "", "Gallery image URL", "gallery");
-    validateUrl(formData.images.thumbnail || "", "Thumbnail image URL", "thumbnail");
-    
+    validateUrl(
+      formData.images.thumbnail || "",
+      "Thumbnail image URL",
+      "thumbnail",
+    );
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -117,17 +142,17 @@ export function AddArtworkModal() {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsLoading(true);
     setErrors({});
-    
+
     try {
       const result = await createArtwork(formData);
-      
+
       if (result.success) {
         resetForm();
         setIsOpen(false);
@@ -171,13 +196,13 @@ export function AddArtworkModal() {
    * Handles input changes for nested objects
    */
   const handleNestedChange = (
-    path: string[], 
-    value: string | number | boolean
+    path: string[],
+    value: string | number | boolean,
   ) => {
-    setFormData(prev => {
+    setFormData((prev) => {
       const newData = { ...prev };
       let current: any = newData;
-      
+
       // Navigate to the nested property
       for (let i = 0; i < path.length - 1; i++) {
         if (!current[path[i]]) {
@@ -185,28 +210,31 @@ export function AddArtworkModal() {
         }
         current = current[path[i]];
       }
-      
+
       // Set the value
       current[path[path.length - 1]] = value;
       return newData;
     });
-    
+
     // Clear related error
-    const errorKey = path.join('') as keyof FormErrors;
+    const errorKey = path.join("") as keyof FormErrors;
     if (errors[errorKey]) {
-      setErrors(prev => ({ ...prev, [errorKey]: undefined }));
+      setErrors((prev) => ({ ...prev, [errorKey]: undefined }));
     }
   };
 
   /**
    * Handles simple input changes
    */
-  const handleInputChange = (field: keyof CreateArtworkData, value: string | number | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    
+  const handleInputChange = (
+    field: keyof CreateArtworkData,
+    value: string | number | boolean,
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
     // Clear field-specific error
     if (errors[field as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -218,7 +246,7 @@ export function AddArtworkModal() {
           Add Artwork
         </Button>
       </AlertDialogTrigger>
-      
+
       <AlertDialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle>Add New Artwork</AlertDialogTitle>
@@ -240,7 +268,7 @@ export function AddArtworkModal() {
           {/* Basic Information */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Basic Information</h3>
-            
+
             {/* Artwork Title */}
             <div className="space-y-2">
               <Label htmlFor="name">Artwork Title *</Label>
@@ -263,7 +291,9 @@ export function AddArtworkModal() {
                 id="year"
                 type="number"
                 value={formData.year}
-                onChange={(e) => handleInputChange("year", parseInt(e.target.value))}
+                onChange={(e) =>
+                  handleInputChange("year", parseInt(e.target.value))
+                }
                 min="1000"
                 max={new Date().getFullYear()}
                 className={errors.year ? "border-red-500" : ""}
@@ -279,7 +309,9 @@ export function AddArtworkModal() {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
                 placeholder="Enter artwork description (supports basic formatting)"
                 rows={4}
               />
@@ -313,14 +345,16 @@ export function AddArtworkModal() {
               <UserIcon className="h-5 w-5" />
               Artist Information
             </h3>
-            
+
             {/* Artist Name */}
             <div className="space-y-2">
               <Label htmlFor="artistName">Artist Name *</Label>
               <Input
                 id="artistName"
                 value={formData.artist.name}
-                onChange={(e) => handleNestedChange(["artist", "name"], e.target.value)}
+                onChange={(e) =>
+                  handleNestedChange(["artist", "name"], e.target.value)
+                }
                 placeholder="Enter artist name"
                 className={errors.artistName ? "border-red-500" : ""}
               />
@@ -338,7 +372,9 @@ export function AddArtworkModal() {
                   id="artistImage"
                   type="url"
                   value={formData.artist.image}
-                  onChange={(e) => handleNestedChange(["artist", "image"], e.target.value)}
+                  onChange={(e) =>
+                    handleNestedChange(["artist", "image"], e.target.value)
+                  }
                   placeholder="https://example.com/artist-photo.jpg"
                   className={`pl-10 ${errors.artistImage ? "border-red-500" : ""}`}
                 />
@@ -357,7 +393,7 @@ export function AddArtworkModal() {
               <ImageIcon className="h-5 w-5" />
               Artwork Images
             </h3>
-            
+
             {/* Hero Images */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -366,7 +402,12 @@ export function AddArtworkModal() {
                   id="heroLarge"
                   type="url"
                   value={formData.images.hero?.large}
-                  onChange={(e) => handleNestedChange(["images", "hero", "large"], e.target.value)}
+                  onChange={(e) =>
+                    handleNestedChange(
+                      ["images", "hero", "large"],
+                      e.target.value,
+                    )
+                  }
                   placeholder="https://example.com/hero-large.jpg"
                   className={errors.heroLarge ? "border-red-500" : ""}
                 />
@@ -381,7 +422,12 @@ export function AddArtworkModal() {
                   id="heroSmall"
                   type="url"
                   value={formData.images.hero?.small}
-                  onChange={(e) => handleNestedChange(["images", "hero", "small"], e.target.value)}
+                  onChange={(e) =>
+                    handleNestedChange(
+                      ["images", "hero", "small"],
+                      e.target.value,
+                    )
+                  }
                   placeholder="https://example.com/hero-small.jpg"
                   className={errors.heroSmall ? "border-red-500" : ""}
                 />
@@ -399,7 +445,9 @@ export function AddArtworkModal() {
                   id="gallery"
                   type="url"
                   value={formData.images.gallery}
-                  onChange={(e) => handleNestedChange(["images", "gallery"], e.target.value)}
+                  onChange={(e) =>
+                    handleNestedChange(["images", "gallery"], e.target.value)
+                  }
                   placeholder="https://example.com/gallery.jpg"
                   className={errors.gallery ? "border-red-500" : ""}
                 />
@@ -414,7 +462,9 @@ export function AddArtworkModal() {
                   id="thumbnail"
                   type="url"
                   value={formData.images.thumbnail}
-                  onChange={(e) => handleNestedChange(["images", "thumbnail"], e.target.value)}
+                  onChange={(e) =>
+                    handleNestedChange(["images", "thumbnail"], e.target.value)
+                  }
                   placeholder="https://example.com/thumbnail.jpg"
                   className={errors.thumbnail ? "border-red-500" : ""}
                 />
@@ -430,15 +480,19 @@ export function AddArtworkModal() {
           {/* Publication Settings */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Publication Settings</h3>
-            
+
             {/* Active Status */}
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="isActive"
                 checked={formData.isActive}
-                onCheckedChange={(checked) => handleInputChange("isActive", checked as boolean)}
+                onCheckedChange={(checked) =>
+                  handleInputChange("isActive", checked as boolean)
+                }
               />
-              <Label htmlFor="isActive">Publish Artwork (make visible in gallery)</Label>
+              <Label htmlFor="isActive">
+                Publish Artwork (make visible in gallery)
+              </Label>
             </div>
           </div>
 
@@ -451,10 +505,7 @@ export function AddArtworkModal() {
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-            >
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <span className="loading loading-spinner loading-xs mr-2"></span>

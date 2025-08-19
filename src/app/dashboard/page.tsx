@@ -13,7 +13,7 @@ import { AddArtworkModal } from "@/_components/AddArtworkModal";
 
 const Dashboard = async () => {
   const artwork = await serverGalleryService.getAllPaintings({
-    includeInactive: true
+    includeInactive: true,
   });
 
   if (artwork) {
@@ -22,13 +22,13 @@ const Dashboard = async () => {
         <MainHeader showSlideshowButton={false} />
         <MainContentContainer>
           <pre>Coming soon...</pre>
-          
+
           {/* Dashboard component */}
           <div className="p-8">
             <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
             {/* Add Artwork Modal */}
             <AddArtworkModal />
-            
+
             {/* Table with current artworks */}
             <div className="overflow-x-auto">
               <table className="table w-full">
@@ -47,7 +47,7 @@ const Dashboard = async () => {
                     <tr key={artwork.id}>
                       {/* Title */}
                       <td className="font-medium">{artwork.name}</td>
-                      
+
                       {/* Artist */}
                       <td>
                         <div className="flex items-center gap-2">
@@ -61,14 +61,16 @@ const Dashboard = async () => {
                             />
                           )}
                           <div>
-                            <div className="font-medium">{artwork.artist?.name}</div>
+                            <div className="font-medium">
+                              {artwork.artist?.name}
+                            </div>
                           </div>
                         </div>
                       </td>
-                      
+
                       {/* Year */}
                       <td>{artwork.year}</td>
-                      
+
                       {/* Images */}
                       <td>
                         <div className="flex gap-2">
@@ -83,11 +85,13 @@ const Dashboard = async () => {
                                 className="object-cover rounded-md"
                               />
                               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
-                                <span className="text-white text-xs">Thumb</span>
+                                <span className="text-white text-xs">
+                                  Thumb
+                                </span>
                               </div>
                             </div>
                           )}
-                          
+
                           {/* Gallery Image */}
                           {artwork.images?.gallery && (
                             <div className="relative group">
@@ -99,11 +103,13 @@ const Dashboard = async () => {
                                 className="object-cover rounded-md"
                               />
                               <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center">
-                                <span className="text-white text-xs">Gallery</span>
+                                <span className="text-white text-xs">
+                                  Gallery
+                                </span>
                               </div>
                             </div>
                           )}
-                          
+
                           {/* Hero Images */}
                           {artwork.images?.hero?.small && (
                             <div className="relative group">
@@ -119,14 +125,18 @@ const Dashboard = async () => {
                               </div>
                             </div>
                           )}
-                          
+
                           {/* Show count if no images */}
-                          {!artwork.images?.thumbnail && !artwork.images?.gallery && !artwork.images?.hero?.small && (
-                            <span className="text-gray-400 text-sm">No images</span>
-                          )}
+                          {!artwork.images?.thumbnail &&
+                            !artwork.images?.gallery &&
+                            !artwork.images?.hero?.small && (
+                              <span className="text-gray-400 text-sm">
+                                No images
+                              </span>
+                            )}
                         </div>
                       </td>
-                      
+
                       {/* Status */}
                       <td>
                         <VisibilityToggle
@@ -134,26 +144,33 @@ const Dashboard = async () => {
                           initialIsActive={artwork.is_active}
                         />
                       </td>
-                      
+
                       {/* Actions */}
                       <td>
                         <div className="flex gap-2">
                           <button className="btn btn-warning">Edit</button>
-                          <DeleteButton id={artwork.id} artworkName={artwork.name} />
+                          <DeleteButton
+                            id={artwork.id}
+                            artworkName={artwork.name}
+                          />
                         </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              
+
               {/* Empty State */}
               {artwork.length === 0 && (
                 <div className="text-center py-12">
                   <div className="text-gray-400 mb-4">
                     <UserIcon className="h-12 w-12 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No artwork found</h3>
-                    <p className="text-sm">Get started by adding your first artwork to the gallery.</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No artwork found
+                    </h3>
+                    <p className="text-sm">
+                      Get started by adding your first artwork to the gallery.
+                    </p>
                   </div>
                 </div>
               )}
@@ -163,7 +180,7 @@ const Dashboard = async () => {
       </LayoutContainer>
     );
   }
-  
+
   // Loading or error state
   return (
     <LayoutContainer>
