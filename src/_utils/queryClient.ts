@@ -1,20 +1,30 @@
 import { QueryClient } from "@tanstack/react-query";
 
-/**
- * Creates and returns a new QueryClient instance.
- *
- * @returns {QueryClient}
- *
- * @see {@link https://tanstack.com/query/v4/docs/guides/ssr}
- */
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      // With SSR, we usually want to set some default staleTime
-      // above 0 to avoid refetching immediately on the client
-      staleTime: 60 * 1000,
-    },
-  },
-});
+// Create a global query client instance
+let client: QueryClient | null = null;
 
-export default queryClient;
+/**
+ * Creates and returns a new instance of QueryClient with default options.
+ *
+ * If the instance is already created, it returns the existing one.
+ *
+ * @returns {QueryClient} A QueryClient instance with default options.
+ */
+export function getQueryClient(): QueryClient {
+  if (!client) {
+    client = new QueryClient({
+      // Add better caching and stale data handling
+      defaultOptions: {
+        queries: {
+          staleTime: 5 * 60 * 1000, // 5 minutes
+          gcTime: 10 * 60 * 1000, // 10 minutes
+          refetchOnWindowFocus: false, // Don't refetch on window focus
+          retry: 3, // Retry failed requests 3 times
+          retryDelay: (attemptIndex) =>
+            Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff with a max delay of 30 seconds
+        },
+      },
+    });
+  }
+  return client;
+}

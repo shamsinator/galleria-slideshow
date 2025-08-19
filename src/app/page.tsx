@@ -5,16 +5,31 @@ import {
 import MainHeader from "@/_components/Header/MainHeader";
 import ArtworkGallery from "@/_components/ArtworkGallery";
 import Navbar from "@/_components/Navbar";
+import { serverGalleryService } from "@/_services/gallery/server";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { getQueryClient } from "@/_utils/queryClient";
 
-export default function Home() {
+export default async function Home() {
+  // Pre-fetch data on the server for better performance
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["paintings", "active"],
+    queryFn: () =>
+      serverGalleryService.getAllPaintings({ includeInactive: false }),
+    staleTime: 5 * 60 * 1000,
+  });
+
   return (
-    <LayoutContainer>
-      <Navbar />
-      <hr></hr>
-      <MainHeader />
-      <MainContentContainer>
-        <ArtworkGallery />
-      </MainContentContainer>
-    </LayoutContainer>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <LayoutContainer>
+        <Navbar />
+        <hr></hr>
+        <MainHeader />
+        <MainContentContainer>
+          <ArtworkGallery />
+        </MainContentContainer>
+      </LayoutContainer>
+    </HydrationBoundary>
   );
 }
