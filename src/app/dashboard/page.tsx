@@ -3,7 +3,7 @@ import Image from "next/image";
 import {
   LayoutContainer,
   MainContentContainer,
-} from "@/_components/LayoutContainer";
+} from "@/_components/common/layout/LayoutContainer";
 import MainHeader from "@/_components/Header/MainHeader";
 import { UserIcon } from "@/_components/Icons";
 import { serverGalleryService } from "@/_services/gallery/server";

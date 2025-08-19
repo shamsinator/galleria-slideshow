@@ -7,7 +7,7 @@ import ArtworkNavigation from "@/_components/ArtworkNavigation";
 import {
   LayoutContainer,
   MainContentContainer,
-} from "@/_components/LayoutContainer";
+} from "@/_components/common/layout/LayoutContainer";
 import MainHeader from "@/_components/Header/MainHeader";
 import { serverGalleryService } from "@/_services/gallery/server";
 import { ModalImage } from "./ModalImage";
