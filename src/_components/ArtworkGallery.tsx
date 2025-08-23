@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import PuffLoader from "react-spinners/PuffLoader";
-import { Artwork } from "../../types";
 import ArtworkCard from "@/_components/ArtworkCard";
 import { clientGalleryService } from "@/_services/gallery/client";
 import { useQuery } from "@tanstack/react-query";
@@ -33,7 +31,7 @@ const MasonryGrid = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <PuffLoader color="#36D7B7" size={150} />
+        <span className="loading loading-spinner loading-sm ml-2"></span>
       </div>
     );
   }
