@@ -1,13 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import {
-  createArtwork,
-  CreateArtworkData,
-  ArtistData,
-  ArtworkImages,
-} from "@/app/dashboard/actions";
-import { PlusIcon, ImageIcon, LinkIcon, UserIcon } from "@/_components/Icons";
+import { createArtwork, CreateArtworkData } from "@/app/dashboard/actions";
+import { ImageIcon, LinkIcon, PlusIcon, UserIcon } from "@/_components/Icons";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -49,7 +44,7 @@ interface FormErrors {
  * @component
  * @returns {JSX.Element} - Rendered component
  */
-export function AddArtworkModal() {
+export default function AddArtworkModal() {
   // Modal state
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

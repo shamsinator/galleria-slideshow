@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   LayoutContainer,
   MainContentContainer,
@@ -9,12 +10,16 @@ import { UserIcon } from "@/_components/Icons";
 import { serverGalleryService } from "@/_services/gallery/server";
 import { VisibilityToggle } from "@/_components/VisibilityToggle";
 import { DeleteButton } from "@/_components/DeleteButton";
-import { AddArtworkModal } from "@/_components/AddArtworkModal";
 
 const Dashboard = async () => {
   const artwork = await serverGalleryService.getAllPaintings({
     includeInactive: true,
   });
+
+  // Lazy load the AddArtworkModal component
+  const AddArtworkModal = dynamic(
+    () => import("@/_components/AddArtworkModal"),
+  );
 
   if (artwork) {
     return (
