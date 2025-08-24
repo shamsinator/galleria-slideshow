@@ -57,6 +57,16 @@ Galleria is a digital art exhibition platform that allows users to browse throug
 - **Lucide React**: Icon library
 - **React Spinners**: Loading indicators
 
+## Rendering Strategy
+
+- Primary: SSR (with React Server Components) for pages that read from Supabase, providing fresh data and SEO benefits.
+  - Examples: `src/app/page.tsx` prefetches data on the server and hydrates via React Query; `src/app/gallery/[slug]/page.tsx` is an async server component fetching artwork details; `src/app/dashboard/page.tsx` fetches on the server.
+- CSR for interactive parts of the UI where client state and user actions dominate.
+  - Examples: `src/_components/ArtworkGallery.tsx` and `src/_components/Header/SlideshowButton.tsx` are client components using React Query to fetch/caches data; `src/_components/AddArtworkModal.tsx` uses client-side form state and server actions.
+- SSG/ISR: Not the default fit because content changes in Supabase (admin can add/toggle visibility), and the app already uses server actions with `revalidatePath`. You could adopt ISR later by adding `revalidate` and `generateStaticParams` to specific routes if the dataset stabilizes, but the current design favors SSR + CSR hydration for freshness.
+
+In short: This project is best suited as a hybrid app — SSR for data-driven pages, with CSR for interactive components; SSG is optional only for truly static pages.
+
 ## Installation
 
 Follow these steps to set up the project locally:
