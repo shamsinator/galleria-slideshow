@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ReactQueryClientProvider } from "@/_providers/ReactQueryClientProvider";
+import { PerformanceMonitor } from "@/_components/PerformanceMonitor";
 import { Libre_Baskerville } from "next/font/google";
 import { ReactNode } from "react";
 import "./globals.css";
@@ -28,6 +29,7 @@ export default function RootLayout({
         <body className={libreBaskerville.className}>
           <div id="modal-root-id">
             <div>{children}</div>
+            <PerformanceMonitor />
           </div>
         </body>
       </html>
