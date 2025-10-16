@@ -44,7 +44,7 @@ export function VisibilityToggle({
    * @function handleToggle
    * @returns {Promise<void>}
    */
-  const handleToggle = async () => {
+  const handleToggle = async (): Promise<void> => {
     if (!id) {
       setError("Missing artwork ID");
       return;

@@ -2,13 +2,17 @@ import { Artwork } from "../../../types";
 import { getSupabaseBrowserClient } from "@/_hooks/useSupabaseClient";
 import { SupabaseGalleryItem, transformToArtwork } from "./utils";
 
+interface GetPaintingsOptions {
+  includeInactive?: boolean;
+}
+
 export const clientGalleryService = {
   /**
    * Fetch all paintings from the Supabase database.
    *
    * @returns An array of Artwork objects
    */
-  async getAllPaintings({ includeInactive = true }): Promise<Artwork[]> {
+  async getAllPaintings({ includeInactive = true }: GetPaintingsOptions = {}): Promise<Artwork[]> {
     const supabase = await getSupabaseBrowserClient();
 
     try {

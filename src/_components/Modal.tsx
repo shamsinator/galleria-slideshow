@@ -3,6 +3,10 @@
 import { useRouter, usePathname } from "next/navigation";
 import React from "react";
 
+interface ModalProps {
+  children: React.ReactNode;
+}
+
 /**
  * A modal component that wraps the child elements in a
  * full-screen overlay container with a close button in the top right.
@@ -12,14 +16,14 @@ import React from "react";
  * clicked to close the modal, which will remove the query parameter and
  * navigate to the same pathname.
  *
- * @param {React.ReactNode} children - The child elements to be wrapped in the modal.
+ * @param {ModalProps} props - Component props
  * @returns {JSX.Element} The modal component element.
  */
-export function Modal({ children }: { children: React.ReactNode }) {
+export function Modal({ children }: ModalProps): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     router.push(pathname);
   };
 

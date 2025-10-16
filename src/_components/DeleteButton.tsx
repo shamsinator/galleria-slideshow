@@ -78,8 +78,9 @@ export function DeleteButton({ id, artworkName }: DeleteButtonProps) {
 
   /**
    * Handles modal close and resets error state
+   * @returns {void}
    */
-  const handleModalClose = () => {
+  const handleModalClose = (): void => {
     if (!isLoading) {
       setIsOpen(false);
       setError(null);

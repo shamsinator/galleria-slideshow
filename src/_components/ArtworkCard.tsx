@@ -1,17 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
+interface ArtworkCardProps {
+  slug: string;
+  name: string;
+  artist: string;
+  path: string;
+}
+
 export default function ArtworkCard({
   slug,
   name,
   artist,
   path,
-}: {
-  slug: string;
-  name: string;
-  artist: string;
-  path: string;
-}) {
+}: ArtworkCardProps) {
   return (
     <div className="relative group cursor-pointer">
       <Link

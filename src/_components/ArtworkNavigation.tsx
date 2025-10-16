@@ -6,27 +6,27 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Artwork } from "../../types";
 
-interface SlideFooterProps {
+interface ArtworkNavigationProps {
   paintings: Array<Artwork>;
   currentIndex: number;
 }
 
-const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
+const ArtworkNavigation: React.FC<ArtworkNavigationProps> = ({ paintings, currentIndex }) => {
   const isLastArtwork = currentIndex === paintings.length - 1;
-  const [progress, setProgress] = useState(0);
-  const intervalRef = useRef<NodeJS.Timer | null>(null);
+  const [progress, setProgress] = useState<number>(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     setProgress(0);
 
-    // @ts-ignore
-    intervalRef.current = window.setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setProgress((prev) => {
         const nextProgress = prev + 1;
         if (nextProgress >= 100) {
-          // @ts-ignore
-          clearInterval(intervalRef.current!);
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+          }
         }
         return nextProgress;
       });
@@ -34,7 +34,6 @@ const ArtworkNavigation = ({ paintings, currentIndex }: SlideFooterProps) => {
 
     return () => {
       if (intervalRef.current) {
-        // @ts-ignore
         clearInterval(intervalRef.current);
       }
     };

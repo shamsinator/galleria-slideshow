@@ -26,7 +26,11 @@ export function getSupabaseBrowserClient(): SupabaseClient<Database> {
   return client;
 }
 
-function useSupabaseClient() {
+/**
+ * Hook to access a typed Supabase client instance
+ * @returns {TypedSupabaseClient} A typed Supabase client instance
+ */
+function useSupabaseClient(): TypedSupabaseClient {
   return useMemo(getSupabaseBrowserClient, []);
 }
 

@@ -3,19 +3,24 @@
 import React from "react";
 import ArtworkCard from "@/_components/ArtworkCard";
 import { clientGalleryService } from "@/_services/gallery/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { Artwork } from "../../types";
+
+interface ArtworkGalleryProps {
+  // Add props if needed in the future
+}
 
 /**
  * A React component that displays a masonry layout of painting images.
  */
-const MasonryGrid = () => {
-  // Use React Query for better caching and performance
+const MasonryGrid: React.FC<ArtworkGalleryProps> = () => {
+  // Use React Query for better caching and performance with proper typing
   const {
     data: paintings = [],
     isLoading,
     isError,
     error,
-  } = useQuery({
+  }: UseQueryResult<Artwork[], Error> = useQuery({
     queryKey: ["paintings", "active"],
     queryFn: () =>
       clientGalleryService.getAllPaintings({ includeInactive: false }),
