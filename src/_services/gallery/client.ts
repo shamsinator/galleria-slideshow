@@ -9,7 +9,7 @@ export const clientGalleryService = {
    * @returns An array of Artwork objects
    */
   async getAllPaintings({ includeInactive = true }): Promise<Artwork[]> {
-    const supabase = getSupabaseBrowserClient();
+    const supabase = await getSupabaseBrowserClient();
 
     try {
       let query = supabase

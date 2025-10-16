@@ -16,7 +16,7 @@ export const serverGalleryService = {
    * @throws Error if the operation fails
    */
   async toggleArtworkVisibility(id: string): Promise<boolean> {
-    const supabase = createSupabaseServer();
+    const supabase = await createSupabaseServer();
 
     try {
       // First get current status
@@ -50,7 +50,7 @@ export const serverGalleryService = {
    * @returns An array of Artwork objects
    */
   async getAllPaintings({ includeInactive = false } = {}): Promise<Artwork[]> {
-    const supabase = createSupabaseServer();
+    const supabase = await createSupabaseServer();
 
     try {
       let query = supabase
@@ -80,7 +80,7 @@ export const serverGalleryService = {
    * @returns {Promise<{id: string}>} - The created artwork with id
    */
   async createArtwork(artworkData: CreateArtworkData): Promise<{ id: string }> {
-    const supabase = createSupabaseServer();
+    const supabase = await createSupabaseServer();
     const storagePath = await createArtworkStorage(artworkData.name);
 
     // Clean up empty strings to null for optional fields
@@ -161,7 +161,7 @@ export const serverGalleryService = {
    * @returns A Promise that resolves to true if the deletion is successful, false otherwise
    */
   async deletePainting(id: string): Promise<boolean> {
-    const supabase = createSupabaseServer();
+    const supabase = await createSupabaseServer();
 
     try {
       const { error } = await supabase.from("galleria").delete().eq("id", id);

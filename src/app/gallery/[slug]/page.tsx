@@ -18,7 +18,9 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const artwork = await serverGalleryService.getPaintingBySlug(params.slug);
+  const { slug } = await params;
+
+  const artwork = await serverGalleryService.getPaintingBySlug(slug);
 
   if (!artwork) {
     return {
@@ -40,10 +42,12 @@ export default async function ArtworkDetail({
 }: {
   params: { slug: string };
 }) {
+  const { slug } = await params;
+
   // Fetch the artwork and all paintings in parallel
   // This allows us to display the artwork details and navigation without waiting for both to finish
   const [artwork, allPaintings] = await Promise.all([
-    serverGalleryService.getPaintingBySlug(params.slug),
+    serverGalleryService.getPaintingBySlug(slug),
     serverGalleryService.getAllPaintings(),
   ]);
 
@@ -76,7 +80,7 @@ export default async function ArtworkDetail({
   const title = artwork?.name;
   const artistName = artwork?.artist?.name;
   const currentIndex = allPaintings.findIndex(
-    (item) => item.slug.toLowerCase().replace(/\s+/g, "-") === params.slug,
+    (item) => item.slug.toLowerCase().replace(/\s+/g, "-") === slug,
   );
 
   return (
@@ -93,7 +97,7 @@ export default async function ArtworkDetail({
 
             <Link
               href={{
-                pathname: `/gallery/${params.slug}`,
+                pathname: `/gallery/${slug}`,
                 query: { modal: "true" },
               }}
               scroll={false}

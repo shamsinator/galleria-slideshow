@@ -19,26 +19,22 @@ type Cookie = {
  *
  * @returns {SupabaseClient<Database>} A Supabase client instance with SSR support.
  */
-export function createSupabaseServer(): SupabaseClient<Database> {
-  const cookieStore = cookies();
+export async function createSupabaseServer(): SupabaseClient<Database> {
+  const cookieStore = await cookies();
   const { supabaseUrl, supabaseKey } = getSupabaseConfig();
 
-  return createServerClient<Database>(supabaseUrl, supabaseKey, {
+  const supabase = createServerClient<Database>(supabaseUrl, supabaseKey, {
     cookies: {
       getAll(): { name: string; value: string }[] {
         return cookieStore.getAll();
       },
       setAll(cookiesToSet: Cookie[]): void {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options),
-          );
-        } catch {
-          // The `setAll` method was called from a Server Component.
-          // This can be ignored if you have middleware refreshing
-          // user sessions.
-        }
+        cookiesToSet.forEach(({ name, value, options }) =>
+          cookieStore.set(name, value, options),
+        );
       },
     },
   });
+
+  return supabase;
 }
