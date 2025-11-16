@@ -1,11 +1,6 @@
 # Galleria -- Modern Art Gallery Platform
 
-A clean, modern, and fully responsive digital art gallery built with
-**Next.js 15**, **React Server Components**, **Supabase**, and
-**Tailwind CSS**.\
-Here is the English translation:
-
-**Galleria displays artworks in an elegant masonry grid, featuring a rich detail view, slideshow navigation, and a complete admin dashboard for managing the collection.**
+**Galleria displays artworks in a masonry grid, featuring a rich detail view, slideshow navigation, and a complete admin dashboard for managing the collection.**
 
 ------------------------------------------------------------------------
 
